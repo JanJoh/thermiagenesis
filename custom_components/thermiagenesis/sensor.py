@@ -1,7 +1,7 @@
 import logging
 
+from homeassistant.components.sensor import SensorEntity
 from homeassistant.components.sensor import SensorStateClass
-from homeassistant.helpers.entity import Entity
 from pythermiagenesis.const import REGISTERS
 
 from .const import ATTR_CLASS
@@ -45,7 +45,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     async_add_entities(sensors, False)
 
 
-class ThermiaHeatpumpSensor(Entity):
+class ThermiaHeatpumpSensor(SensorEntity):
     """Define a Thermia heatpump sensor."""
 
     def __init__(self, coordinator, kind, device_info):
@@ -155,7 +155,7 @@ class ThermiaHeatpumpSensor(Entity):
         await self.coordinator.async_request_refresh()
 
 
-class ThermiaGenericSensor(Entity):
+class ThermiaGenericSensor(SensorEntity):
     """Define a Thermia generic sensor."""
 
     def __init__(self, coordinator, kind, device_info):
