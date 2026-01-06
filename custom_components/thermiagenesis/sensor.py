@@ -100,6 +100,18 @@ class ThermiaHeatpumpSensor(Entity):
         return SENSOR_TYPES[self.kind].get(ATTR_UNIT, None)
 
     @property
+    def device_class(self):
+        """Return de device class of the sensor."""
+        return SENSOR_TYPES[self.kind].get(ATTR_CLASS, None)
+
+    @property
+    def state_class(self):
+        """Return de device class of the sensor."""
+        return SENSOR_TYPES[self.kind].get(
+            ATTR_STATE_CLASS, SensorStateClass.MEASUREMENT
+        )
+
+    @property
     def available(self):
         """Return True if entity is available."""
         return self.coordinator.last_update_success
