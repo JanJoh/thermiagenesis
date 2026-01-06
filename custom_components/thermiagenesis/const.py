@@ -33,6 +33,7 @@ UNIT_KELVIN = "K"
 UNIT_SECONDS = "s"
 UNIT_HOURS = "h"
 UNIT_TEMPERATURE = UnitOfTemperature.CELSIUS
+UNIT_PRESSURE = "bar"
 UNIT_VOLTAGE = "V"
 UNIT_AMPERE = "A"
 UNIT_WATT = "W"
@@ -869,9 +870,8 @@ SENSOR_TYPES = {
     thermiaconst.ATTR_INPUT_COMPRESSOR_AVAILABLE_GEARS: {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Compressor Available Gears",
-        ATTR_UNIT: UNIT_TEMPERATURE,
+        ATTR_UNIT: None,
         ATTR_DEFAULT_ENABLED: False,
-        ATTR_CLASS: SensorDeviceClass.TEMPERATURE,
         ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
     },
     thermiaconst.ATTR_INPUT_COMPRESSOR_SPEED_RPM: {
@@ -884,9 +884,8 @@ SENSOR_TYPES = {
     thermiaconst.ATTR_INPUT_EXTERNAL_ADDITIONAL_HEATER_CURRENT_DEMAND: {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "External Additional Heater Current Demand",
-        ATTR_UNIT: UNIT_TEMPERATURE,
+        ATTR_UNIT: PERCENTAGE,
         ATTR_DEFAULT_ENABLED: False,
-        ATTR_CLASS: SensorDeviceClass.TEMPERATURE,
         ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
     },
     thermiaconst.ATTR_INPUT_DISCHARGE_PIPE_TEMPERATURE: {
@@ -990,42 +989,56 @@ SENSOR_TYPES = {
         ATTR_LABEL: "Heat Curve X Coordinate 1",
         ATTR_UNIT: UNIT_TEMPERATURE,
         ATTR_DEFAULT_ENABLED: False,
+        ATTR_CLASS: SensorDeviceClass.TEMPERATURE,
+        ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
     },
     thermiaconst.ATTR_INPUT_HEAT_CURVE_X_COORDINATE_2: {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Heat Curve X Coordinate 2",
         ATTR_UNIT: UNIT_TEMPERATURE,
         ATTR_DEFAULT_ENABLED: False,
+        ATTR_CLASS: SensorDeviceClass.TEMPERATURE,
+        ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
     },
     thermiaconst.ATTR_INPUT_HEAT_CURVE_X_COORDINATE_3: {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Heat Curve X Coordinate 3",
         ATTR_UNIT: UNIT_TEMPERATURE,
         ATTR_DEFAULT_ENABLED: False,
+        ATTR_CLASS: SensorDeviceClass.TEMPERATURE,
+        ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
     },
     thermiaconst.ATTR_INPUT_HEAT_CURVE_X_COORDINATE_4: {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Heat Curve X Coordinate 4",
         ATTR_UNIT: UNIT_TEMPERATURE,
         ATTR_DEFAULT_ENABLED: False,
+        ATTR_CLASS: SensorDeviceClass.TEMPERATURE,
+        ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
     },
     thermiaconst.ATTR_INPUT_HEAT_CURVE_X_COORDINATE_5: {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Heat Curve X Coordinate 5",
         ATTR_UNIT: UNIT_TEMPERATURE,
         ATTR_DEFAULT_ENABLED: False,
+        ATTR_CLASS: SensorDeviceClass.TEMPERATURE,
+        ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
     },
     thermiaconst.ATTR_INPUT_HEAT_CURVE_X_COORDINATE_6: {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Heat Curve X Coordinate 6",
         ATTR_UNIT: UNIT_TEMPERATURE,
         ATTR_DEFAULT_ENABLED: False,
+        ATTR_CLASS: SensorDeviceClass.TEMPERATURE,
+        ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
     },
     thermiaconst.ATTR_INPUT_HEAT_CURVE_X_COORDINATE_7: {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Heat Curve X Coordinate 7",
         ATTR_UNIT: UNIT_TEMPERATURE,
         ATTR_DEFAULT_ENABLED: False,
+        ATTR_CLASS: SensorDeviceClass.TEMPERATURE,
+        ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
     },
     thermiaconst.ATTR_INPUT_COOLING_SEASON_INTEGRAL_VALUE: {
         ATTR_ICON: ICON_INPUT,
@@ -1047,6 +1060,8 @@ SENSOR_TYPES = {
         ATTR_LABEL: "Mix Valve 1 Supply Line Temperature",
         ATTR_UNIT: UNIT_TEMPERATURE,
         ATTR_DEFAULT_ENABLED: False,
+        ATTR_CLASS: SensorDeviceClass.TEMPERATURE,
+        ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
     },
     thermiaconst.ATTR_INPUT_BUFFER_TANK_TEMPERATURE: {
         ATTR_ICON: ICON_INPUT,
@@ -1059,8 +1074,9 @@ SENSOR_TYPES = {
     thermiaconst.ATTR_INPUT_MIX_VALVE_1_POSITION: {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Mix Valve 1 Position",
-        ATTR_UNIT: UNIT_TEMPERATURE,
+        ATTR_UNIT: PERCENTAGE,
         ATTR_DEFAULT_ENABLED: False,
+        ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
     },
     thermiaconst.ATTR_INPUT_BRINE_CIRCULATION_PUMP_SPEED: {
         ATTR_ICON: ICON_INPUT,
@@ -1080,9 +1096,8 @@ SENSOR_TYPES = {
     thermiaconst.ATTR_INPUT_HOT_WATER_DIRECTIONAL_VALVE_POSITION: {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Hot Water Directional Valve Position",
-        ATTR_UNIT: UNIT_TEMPERATURE,
+        ATTR_UNIT: PERCENTAGE,
         ATTR_DEFAULT_ENABLED: False,
-        ATTR_CLASS: SensorDeviceClass.TEMPERATURE,
         ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
     },
     thermiaconst.ATTR_INPUT_COMPRESSOR_OPERATING_HOURS: {
@@ -1149,8 +1164,9 @@ SENSOR_TYPES = {
     thermiaconst.ATTR_INPUT_COMPRESSOR_TEMPORARILY_BLOCKED: {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Compressor Temporarily Blocked",
-        ATTR_UNIT: None,
+        ATTR_UNIT: UNIT_SECONDS,
         ATTR_DEFAULT_ENABLED: False,
+        ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
     },
     thermiaconst.ATTR_INPUT_COMPRESSOR_CURRENT_GEAR: {
         ATTR_ICON: ICON_INPUT,
@@ -1303,6 +1319,7 @@ SENSOR_TYPES = {
         ATTR_LABEL: "Electric Meter Meter Value",
         ATTR_UNIT: UNIT_ENERGY,
         ATTR_STATE_CLASS: SensorStateClass.TOTAL_INCREASING,
+        ATTR_CLASS: SensorDeviceClass.ENERGY,
         ATTR_DEFAULT_ENABLED: False,
     },
     thermiaconst.ATTR_INPUT_COMFORT_MODE: {
@@ -1316,7 +1333,7 @@ SENSOR_TYPES = {
         ATTR_LABEL: "Electric Meter Kwh Total",
         ATTR_UNIT: UNIT_ENERGY,
         ATTR_STATE_CLASS: SensorStateClass.TOTAL_INCREASING,
-        ATTR_CLASS: CLASS_ENERGY,
+        ATTR_CLASS: SensorDeviceClass.ENERGY,
         ATTR_DEFAULT_ENABLED: False,
     },
     thermiaconst.ATTR_INPUT_WCS_VALVE_POSITION: {
@@ -1426,18 +1443,24 @@ SENSOR_TYPES = {
         ATTR_LABEL: "Mix Valve 2 Supply Line Temperature",
         ATTR_UNIT: UNIT_TEMPERATURE,
         ATTR_DEFAULT_ENABLED: False,
+        ATTR_CLASS: SensorDeviceClass.TEMPERATURE,
+        ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
     },
     thermiaconst.ATTR_INPUT_MIX_VALVE_3_SUPPLY_LINE_TEMPERATURE: {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Mix Valve 3 Supply Line Temperature",
         ATTR_UNIT: UNIT_TEMPERATURE,
         ATTR_DEFAULT_ENABLED: False,
+        ATTR_CLASS: SensorDeviceClass.TEMPERATURE,
+        ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
     },
     thermiaconst.ATTR_INPUT_MIX_VALVE_4_SUPPLY_LINE_TEMPERATURE: {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Mix Valve 4 Supply Line Temperature",
         ATTR_UNIT: UNIT_TEMPERATURE,
         ATTR_DEFAULT_ENABLED: False,
+        ATTR_CLASS: SensorDeviceClass.TEMPERATURE,
+        ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
     },
     thermiaconst.ATTR_INPUT_COOLING_CIRCUIT_RETURN_LINE_TEMPERATURE: {
         ATTR_ICON: ICON_INPUT,
@@ -1476,30 +1499,40 @@ SENSOR_TYPES = {
         ATTR_LABEL: "Mix Valve 5 Supply Line Temperature",
         ATTR_UNIT: UNIT_TEMPERATURE,
         ATTR_DEFAULT_ENABLED: False,
+        ATTR_CLASS: SensorDeviceClass.TEMPERATURE,
+        ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
     },
     thermiaconst.ATTR_INPUT_MIX_VALVE_2_RETURN_LINE_TEMPERATURE: {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Mix Valve 2 Return Line Temperature",
         ATTR_UNIT: UNIT_TEMPERATURE,
         ATTR_DEFAULT_ENABLED: False,
+        ATTR_CLASS: SensorDeviceClass.TEMPERATURE,
+        ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
     },
     thermiaconst.ATTR_INPUT_MIX_VALVE_3_RETURN_LINE_TEMPERATURE: {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Mix Valve 3 Return Line Temperature",
         ATTR_UNIT: UNIT_TEMPERATURE,
         ATTR_DEFAULT_ENABLED: False,
+        ATTR_CLASS: SensorDeviceClass.TEMPERATURE,
+        ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
     },
     thermiaconst.ATTR_INPUT_MIX_VALVE_4_RETURN_LINE_TEMPERATURE: {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Mix Valve 4 Return Line Temperature",
         ATTR_UNIT: UNIT_TEMPERATURE,
         ATTR_DEFAULT_ENABLED: False,
+        ATTR_CLASS: SensorDeviceClass.TEMPERATURE,
+        ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
     },
     thermiaconst.ATTR_INPUT_MIX_VALVE_5_RETURN_LINE_TEMPERATURE: {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Mix Valve 5 Return Line Temperature",
         ATTR_UNIT: UNIT_TEMPERATURE,
         ATTR_DEFAULT_ENABLED: False,
+        ATTR_CLASS: SensorDeviceClass.TEMPERATURE,
+        ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
     },
     thermiaconst.ATTR_INPUT_SURPLUS_HEAT_RETURN_LINE_TEMPERATURE: {
         ATTR_ICON: ICON_INPUT,
@@ -1560,7 +1593,7 @@ SENSOR_TYPES = {
     thermiaconst.ATTR_INPUT_SUPERHEAT_TEMPERATURE: {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Superheat Temperature",
-        ATTR_UNIT: UNIT_TEMPERATURE,
+        ATTR_UNIT: UNIT_KELVIN,
         ATTR_DEFAULT_ENABLED: False,
         ATTR_CLASS: SensorDeviceClass.TEMPERATURE,
         ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
@@ -1568,7 +1601,7 @@ SENSOR_TYPES = {
     thermiaconst.ATTR_INPUT_SUB_COOLING_TEMPERATURE: {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Sub Cooling Temperature",
-        ATTR_UNIT: UNIT_TEMPERATURE,
+        ATTR_UNIT: UNIT_KELVIN,
         ATTR_DEFAULT_ENABLED: False,
         ATTR_CLASS: SensorDeviceClass.TEMPERATURE,
         ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
@@ -1576,17 +1609,17 @@ SENSOR_TYPES = {
     thermiaconst.ATTR_INPUT_LOW_PRESSURE_SIDE: {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Low Pressure Side",
-        ATTR_UNIT: UNIT_TEMPERATURE,
+        ATTR_UNIT: UNIT_PRESSURE,
         ATTR_DEFAULT_ENABLED: False,
-        ATTR_CLASS: SensorDeviceClass.TEMPERATURE,
+        ATTR_CLASS: SensorDeviceClass.PRESSURE,
         ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
     },
     thermiaconst.ATTR_INPUT_HIGH_PRESSURE_SIDE: {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "High Pressure Side",
-        ATTR_UNIT: UNIT_TEMPERATURE,
+        ATTR_UNIT: UNIT_PRESSURE,
         ATTR_DEFAULT_ENABLED: False,
-        ATTR_CLASS: SensorDeviceClass.TEMPERATURE,
+        ATTR_CLASS: SensorDeviceClass.PRESSURE,
         ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
     },
     thermiaconst.ATTR_INPUT_LIQUID_LINE_TEMPERATURE: {
@@ -1735,10 +1768,8 @@ SENSOR_TYPES = {
     thermiaconst.ATTR_INPUT_LEGACY_HEAT_PUMP_COMPRESSOR_RUNNING: {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Legacy Heat Pump Compressor Running",
-        ATTR_UNIT: UNIT_TEMPERATURE,
+        ATTR_UNIT: None,
         ATTR_DEFAULT_ENABLED: False,
-        ATTR_CLASS: SensorDeviceClass.TEMPERATURE,
-        ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
     },
     thermiaconst.ATTR_INPUT_LEGACY_HEAT_PUMP_REPORTING_ALARM: {
         ATTR_ICON: ICON_INPUT,
@@ -1773,10 +1804,8 @@ SENSOR_TYPES = {
     thermiaconst.ATTR_INPUT_PRIMARY_UNIT_ALARM_CLASS_A_ALARM_DETECTED_ON_THE_GENESIS_SECONDARY: {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Primary Unit Alarm Class A Alarm Detected On The Genesis Secondary",
-        ATTR_UNIT: UNIT_TEMPERATURE,
+        ATTR_UNIT: None,
         ATTR_DEFAULT_ENABLED: False,
-        ATTR_CLASS: SensorDeviceClass.TEMPERATURE,
-        ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
     },
     thermiaconst.ATTR_INPUT_PRIMARY_UNIT_ALARM_CLASS_B_ALARM_DETECTED_ON_THE_GENESIS_SECONDARY: {
         ATTR_ICON: ICON_INPUT,
