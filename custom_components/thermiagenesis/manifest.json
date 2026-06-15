@@ -1,12 +1,16 @@
 {
   "domain": "thermiagenesis",
   "name": "Thermia Genesis",
-  "codeowners": ["@cjne"],
+  "codeowners": [
+    "@JanJoh"
+  ],
   "config_flow": true,
   "dependencies": [],
-  "documentation": "https://github.com/CJNE/thermiagenesis",
+  "documentation": "https://github.com/JanJoh/thermiagenesis",
   "iot_class": "local_polling",
-  "issue_tracker": "https://github.com/CJNE/thermiagenesis/issues",
-  "requirements": ["pythermiagenesis==0.1.8"],
+  "issue_tracker": "https://github.com/JanJoh/thermiagenesis/issues",
+  "requirements": [
+    "pythermiagenesis==0.1.8"
+  ],
   "version": "0.0.12"
 }
