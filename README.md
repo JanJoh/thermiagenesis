@@ -8,7 +8,8 @@
 Exists solely to install via HACS and cherry-pick unmerged PRs without waiting for upstream. No original development happens here.
 
 Currently includes:
-- [PR #318](https://github.com/CJNE/thermiagenesis/pull/318) merged into master
+- [PR #318](https://github.com/CJNE/thermiagenesis/pull/318) merged into master, this means that they registers should have proper
+device_type and device_class in Homeassistant
 
 ## Staying in sync with upstream
 
