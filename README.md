@@ -9,7 +9,7 @@ Exists solely to install via HACS and cherry-pick unmerged PRs without waiting f
 
 Currently includes:
 - [PR #318](https://github.com/CJNE/thermiagenesis/pull/318) merged into master, this means that they registers should have proper
-device_type and device_class in Homeassistant
+device_class and state_class in Homeassistant
 
 ## Staying in sync with upstream
 
