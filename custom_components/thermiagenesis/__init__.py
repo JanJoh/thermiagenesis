@@ -16,9 +16,13 @@ from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.helpers.update_coordinator import UpdateFailed
 from pythermiagenesis import ThermiaGenesis
+from pythermiagenesis.const import ATTR_INPUT_POOL_RETURN_LINE_TEMPERATURE
+from pythermiagenesis.const import ATTR_INPUT_POOL_SUPPLY_LINE_TEMPERATURE
+from pythermiagenesis.const import KEY_SCALE
 from pythermiagenesis.const import MODEL_MEGA
 from pythermiagenesis.const import REG_DISCRETE_INPUT
 from pythermiagenesis.const import REGISTER_RANGES
+from pythermiagenesis.const import REGISTERS
 
 from .const import DOMAIN
 
@@ -43,14 +47,25 @@ from .const import DOMAIN
 # register fails the entire refresh and every entity the integration owns goes
 # unavailable -- not just the offending one.
 #
-# All four sit directly against registers already in range: 0-3 are alarm
-# classes A-D and this is class E, and 83 is the genesis secondary unit alarm
-# with 84-86 following on. So the range table is short rather than the
-# registers being absent from the model. Addresses 5-8 stay a genuine hole.
+# Confirmed against "Modbus protocol for Mega & Mega E, Genesis platform"
+# v17.00.007: the discrete input table runs 0=Class A, 1=B, 2=C,
+# 3=D (Genesis secondary), 4=E (Legacy secondary), then jumps to 9 -- so 5-8 is
+# a genuine hole -- and the 81..87 block ends at 87 (tap water top sensor
+# alarm), which the library's table does not carry. Also verified by read-only
+# Modbus probe against a Calibra 8E: all four addresses, and the block read of
+# 0-4 this range produces, answer normally.
 #
 # Upstream: CJNE/pythermiagenesis#7 (these ranges) and #8 (_get_data should
 # warn and skip instead of raising). Remove this once #7 is released.
-REGISTER_RANGES[MODEL_MEGA][REG_DISCRETE_INPUT] = [[0, 4], [9, 86], [199, 247]]
+REGISTER_RANGES[MODEL_MEGA][REG_DISCRETE_INPUT] = [[0, 4], [9, 87], [199, 247]]
+
+# Pool supply/return line temperature are declared scale 1, but the Thermia
+# spec gives both as scale 100 -- as it does for every other degC register in
+# the map. Left uncorrected they report a hundred times too high.
+#     input 119  Pool supply line temperature (EM)   degC  scale 100
+#     input 120  Pool return line temperature (EM)   degC  scale 100
+REGISTERS[ATTR_INPUT_POOL_SUPPLY_LINE_TEMPERATURE][KEY_SCALE] = 100
+REGISTERS[ATTR_INPUT_POOL_RETURN_LINE_TEMPERATURE][KEY_SCALE] = 100
 
 PLATFORMS = ["sensor", "binary_sensor", "climate", "switch", "number"]
 
