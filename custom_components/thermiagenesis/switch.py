@@ -27,7 +27,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
         "name": ATTR_MODEL,
         "manufacturer": ATTR_MANUFACTURER,
         "model": ATTR_MODEL,
-        "sw_version": coordinator.thermia.firmware,
+        "sw_version": coordinator.firmware,
     }
 
     for sensor in SWITCH_TYPES:
