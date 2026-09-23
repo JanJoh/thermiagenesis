@@ -18,6 +18,23 @@ Currently carries:
 - **Sensor attributes corrected** against the official Thermia Modbus
   specification.
 
+- **Fixed the reported firmware version.** Every `device_info` used
+  `coordinator.data.get("firmware")`, but `coordinator.data` is keyed by
+  *register name* and no register is called `firmware` — the library exposes it
+  as the attribute `thermia.firmware`. That lookup returned `None`
+  unconditionally, so the device's software version was always blank. Now reads
+  the attribute, and the three software-version registers are requested before
+  the first refresh so it is populated by the time the platforms build their
+  device info.
+
+- **No more `unknown` entities for 30 seconds after every reload.** Setup called
+  `coordinator.async_refresh()` *before* forwarding the platform setups — at
+  which point no entity had registered anything, so the coordinator asked for
+  zero registers and stored an empty dict. Entities are then added with
+  `async_add_entities(..., False)`, so every one read `None` until the next
+  scheduled poll. Setup now refreshes again once the platforms have registered
+  what they want.
+
 - **Corrected pool temperature scaling.** `input 119` (pool supply line) and
   `input 120` (pool return line) are declared scale `1` in
   `pythermiagenesis`, but the Thermia spec gives both as scale `100`, as it
@@ -83,10 +100,14 @@ whereas zero current or zero power is ambiguous.
 
 ## Known rough edges
 
-- `ATTR_MODEL` in `sensor.py` is the hardcoded string `"Diplomat Inverter Duo"`,
-  so the device and its entity IDs carry that name whatever your pump actually
-  is. Cosmetic, but it means entity names are not evidence of the configured
-  platform — the configured `kind` is `entry.data[CONF_TYPE]`.
+- `ATTR_MODEL` in each platform is the hardcoded string
+  `"Diplomat Inverter Duo"`, so the device and its entity IDs carry that name
+  whatever your pump actually is. It means entity names are not evidence of the
+  configured platform — the configured `kind` is `entry.data[CONF_TYPE]`. Note
+  this is **not safely fixable**: `ATTR_MODEL` is also the device identifier
+  (`identifiers: {(DOMAIN, ATTR_MODEL)}`), so changing it would register a new
+  device and orphan every existing entity. The library already exposes a correct
+  `thermia.model`, but adopting it needs a migration rather than an edit.
 - `climate.py` is the one platform that does not gate entity creation on the
   configured model. Currently harmless, since `CLIMATE_TYPES` contains no
   model-specific registers.
