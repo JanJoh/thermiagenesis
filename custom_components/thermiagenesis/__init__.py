@@ -16,8 +16,41 @@ from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.helpers.update_coordinator import UpdateFailed
 from pythermiagenesis import ThermiaGenesis
+from pythermiagenesis.const import MODEL_MEGA
+from pythermiagenesis.const import REG_DISCRETE_INPUT
+from pythermiagenesis.const import REGISTER_RANGES
 
 from .const import DOMAIN
+
+# --- Workaround for pythermiagenesis 0.1.8 ---------------------------------
+# On the mega platform, four discrete-input registers are flagged
+# MODEL_MEGA: True in the library's REGISTERS table -- so the per-model gate in
+# our platform setups correctly creates entities for them -- yet they fall
+# outside the declared mega dinput ranges, [[0, 3], [9, 83], [199, 247]]:
+#
+#     addr 4   dinput_alarm_active_class_e
+#     addr 84  dinput_primary_unit_conflict_alarm
+#     addr 85  dinput_primary_unit_no_secondary_alarm
+#     addr 86  dinput_oil_boost_in_progress
+#
+# Enabling any of them makes _get_data() unable to place the address in a
+# block, and the unguarded lookup raises:
+#
+#     chunk["range_end"] = in_range[0][1]
+#     IndexError: list index out of range
+#
+# That happens inside the coordinator's _async_update_data, so one such
+# register fails the entire refresh and every entity the integration owns goes
+# unavailable -- not just the offending one.
+#
+# All four sit directly against registers already in range: 0-3 are alarm
+# classes A-D and this is class E, and 83 is the genesis secondary unit alarm
+# with 84-86 following on. So the range table is short rather than the
+# registers being absent from the model. Addresses 5-8 stay a genuine hole.
+#
+# Upstream: CJNE/pythermiagenesis#7 (these ranges) and #8 (_get_data should
+# warn and skip instead of raising). Remove this once #7 is released.
+REGISTER_RANGES[MODEL_MEGA][REG_DISCRETE_INPUT] = [[0, 4], [9, 86], [199, 247]]
 
 PLATFORMS = ["sensor", "binary_sensor", "climate", "switch", "number"]
 
