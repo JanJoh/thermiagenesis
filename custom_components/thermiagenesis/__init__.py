@@ -186,6 +186,28 @@ class ThermiaGenesisDataUpdateCoordinator(DataUpdateCoordinator):
             raise UpdateFailed(error)
         return self.thermia.data
 
+    @property
+    def firmware(self):
+        """Return the pump firmware version, or None if not yet read.
+
+        Deliberately computed here rather than read from
+        ThermiaGenesis.firmware. The library sets that attribute from
+        self.data *before* overwriting self.data with the freshly read
+        values, so it always lags one refresh behind -- on the first refresh
+        self.data is still empty, the KeyError is swallowed by the library's
+        own except KeyError, and the attribute stays None. device_info is
+        built between those two refreshes, so it would never see a value.
+        """
+        data = self.data or {}
+        try:
+            return (
+                f"{data[ATTR_INPUT_SOFTWARE_VERSION_MAJOR]}"
+                f".{data[ATTR_INPUT_SOFTWARE_VERSION_MINOR]}"
+                f".{data[ATTR_INPUT_SOFTWARE_VERSION_MICRO]}"
+            )
+        except KeyError:
+            return None
+
     def registerAttribute(self, attribute):
         if type(attribute) is list:
             for name in attribute:

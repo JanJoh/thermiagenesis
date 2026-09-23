@@ -18,14 +18,22 @@ Currently carries:
 - **Sensor attributes corrected** against the official Thermia Modbus
   specification.
 
-- **Fixed the reported firmware version.** Every `device_info` used
-  `coordinator.data.get("firmware")`, but `coordinator.data` is keyed by
-  *register name* and no register is called `firmware` — the library exposes it
-  as the attribute `thermia.firmware`. That lookup returned `None`
-  unconditionally, so the device's software version was always blank. Now reads
-  the attribute, and the three software-version registers are requested before
-  the first refresh so it is populated by the time the platforms build their
-  device info.
+- **Fixed the reported firmware version.** Two separate faults. First, every
+  `device_info` used `coordinator.data.get("firmware")`, but `coordinator.data`
+  is keyed by *register name* and no register is called `firmware` — so the
+  lookup returned `None` unconditionally.
+
+  Second, `ThermiaGenesis.firmware` cannot be used either: the library sets it
+  from `self.data` *before* overwriting `self.data` with the freshly read
+  values, so it always lags one refresh behind. On the first refresh `self.data`
+  is still empty, the resulting `KeyError` is swallowed by the library's own
+  `except KeyError`, and the attribute stays `None` — and `device_info` is built
+  between the two refreshes, so it would never see a value.
+
+  The coordinator therefore computes the version itself from its own current
+  data, and setup requests the three `input_software_version_*` registers before
+  the first refresh so the value exists when the platforms build their device
+  info.
 
 - **No more `unknown` entities for 30 seconds after every reload.** Setup called
   `coordinator.async_refresh()` *before* forwarding the platform setups — at

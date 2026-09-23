@@ -31,7 +31,7 @@ class ThermiaGenesisEntity(CoordinatorEntity):
             "name": ATTR_MODEL,
             "manufacturer": ATTR_MANUFACTURER,
             "model": ATTR_MODEL,
-            "sw_version": self.coordinator.thermia.firmware,
+            "sw_version": self.coordinator.firmware,
         }
 
     @property
@@ -67,7 +67,7 @@ class HeatpumpEntity(CoordinatorEntity):
             "name": ATTR_MODEL,
             "manufacturer": ATTR_MANUFACTURER,
             "model": ATTR_MODEL,
-            "sw_version": self.coordinator.thermia.firmware,
+            "sw_version": self.coordinator.firmware,
         }
 
     @property
