@@ -17,6 +17,9 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.helpers.update_coordinator import UpdateFailed
 from pythermiagenesis import ThermiaGenesis
 from pythermiagenesis.const import ATTR_INPUT_POOL_RETURN_LINE_TEMPERATURE
+from pythermiagenesis.const import ATTR_INPUT_SOFTWARE_VERSION_MAJOR
+from pythermiagenesis.const import ATTR_INPUT_SOFTWARE_VERSION_MICRO
+from pythermiagenesis.const import ATTR_INPUT_SOFTWARE_VERSION_MINOR
 from pythermiagenesis.const import ATTR_INPUT_POOL_SUPPLY_LINE_TEMPERATURE
 from pythermiagenesis.const import KEY_SCALE
 from pythermiagenesis.const import MODEL_MEGA
@@ -89,6 +92,19 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     coordinator = ThermiaGenesisDataUpdateCoordinator(
         hass, host=host, port=port, kind=kind
     )
+
+    # Ask for the software version registers before the first refresh. The
+    # coordinator only reads registers that entities have registered, and no
+    # entity exists yet -- so without this the first refresh requests nothing,
+    # and thermia.firmware is never populated for the device_info that the
+    # platforms build a moment later.
+    coordinator.registerAttribute(
+        [
+            ATTR_INPUT_SOFTWARE_VERSION_MAJOR,
+            ATTR_INPUT_SOFTWARE_VERSION_MINOR,
+            ATTR_INPUT_SOFTWARE_VERSION_MICRO,
+        ]
+    )
     await coordinator.async_refresh()
 
     if not coordinator.last_update_success:
@@ -98,6 +114,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     hass.data[DOMAIN][entry.entry_id] = coordinator
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+
+    # Refresh again now that the platforms have registered everything they
+    # want. Entities are added with async_add_entities(..., False), so without
+    # this every entity reports "unknown" until the next scheduled poll -- up
+    # to SCAN_INTERVAL seconds after each setup or reload.
+    await coordinator.async_refresh()
 
     return True
 
