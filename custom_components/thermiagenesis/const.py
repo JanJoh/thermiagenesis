@@ -1938,7 +1938,7 @@ NUMBER_TYPES = {
         ATTR_LABEL: "Minimum Allowed Gear In Heating",
         ATTR_UNIT: None,
         ATTR_MIN_VALUE: 1,
-        ATTR_MAX_VALUE: 9,
+        ATTR_MAX_VALUE: 10,
         ATTR_DEFAULT_ENABLED: False,
     },
     thermiaconst.ATTR_HOLDING_MAXIMUM_ALLOWED_GEAR_IN_HEATING: {
@@ -1946,7 +1946,7 @@ NUMBER_TYPES = {
         ATTR_LABEL: "Maximum Allowed Gear In Heating",
         ATTR_UNIT: None,
         ATTR_MIN_VALUE: 1,
-        ATTR_MAX_VALUE: 9,
+        ATTR_MAX_VALUE: 10,
         ATTR_DEFAULT_ENABLED: False,
     },
     thermiaconst.ATTR_HOLDING_MAXIMUM_ALLOWED_GEAR_IN_TAP_WATER: {
@@ -1954,7 +1954,7 @@ NUMBER_TYPES = {
         ATTR_LABEL: "Maximum Allowed Gear In Tap Water",
         ATTR_UNIT: None,
         ATTR_MIN_VALUE: 1,
-        ATTR_MAX_VALUE: 9,
+        ATTR_MAX_VALUE: 10,
         ATTR_DEFAULT_ENABLED: False,
     },
     thermiaconst.ATTR_HOLDING_MINIMUM_ALLOWED_GEAR_IN_TAP_WATER: {
@@ -1962,7 +1962,7 @@ NUMBER_TYPES = {
         ATTR_LABEL: "Minimum Allowed Gear In Tap Water",
         ATTR_UNIT: None,
         ATTR_MIN_VALUE: 1,
-        ATTR_MAX_VALUE: 9,
+        ATTR_MAX_VALUE: 10,
         ATTR_DEFAULT_ENABLED: False,
     },
     thermiaconst.ATTR_HOLDING_COOLING_MIX_VALVE_SET_POINT: {
@@ -2327,7 +2327,7 @@ NUMBER_TYPES = {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Minimum Allowed Gear In Pool",
         ATTR_MIN_VALUE: 1,
-        ATTR_MAX_VALUE: 9,
+        ATTR_MAX_VALUE: 10,
         ATTR_UNIT: None,
         ATTR_DEFAULT_ENABLED: False,
     },
@@ -2335,7 +2335,7 @@ NUMBER_TYPES = {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Maximum Allowed Gear In Pool",
         ATTR_MIN_VALUE: 1,
-        ATTR_MAX_VALUE: 9,
+        ATTR_MAX_VALUE: 10,
         ATTR_UNIT: None,
         ATTR_DEFAULT_ENABLED: False,
     },
@@ -2343,7 +2343,7 @@ NUMBER_TYPES = {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Minimum Allowed Gear In Cooling",
         ATTR_MIN_VALUE: 1,
-        ATTR_MAX_VALUE: 9,
+        ATTR_MAX_VALUE: 10,
         ATTR_UNIT: None,
         ATTR_DEFAULT_ENABLED: False,
     },
@@ -2351,7 +2351,7 @@ NUMBER_TYPES = {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Maximum Allowed Gear In Cooling",
         ATTR_MIN_VALUE: 1,
-        ATTR_MAX_VALUE: 9,
+        ATTR_MAX_VALUE: 10,
         ATTR_UNIT: None,
         ATTR_DEFAULT_ENABLED: False,
     },
@@ -2795,4 +2795,19 @@ NUMBER_TYPES = {
         ATTR_UNIT: UNIT_TEMPERATURE,
         ATTR_DEFAULT_ENABLED: False,
     },
+}
+
+
+# Gear limits: the highest valid gear is the compressor's own number of gears
+# (ATTR_INPUT_COMPRESSOR_AVAILABLE_GEARS), e.g. 10 on a Diplomat Inverter Duo. ATTR_MAX_VALUE
+# above is the fallback when the pump doesn't report it.
+GEAR_LIMITS = {
+    thermiaconst.ATTR_HOLDING_MINIMUM_ALLOWED_GEAR_IN_HEATING,
+    thermiaconst.ATTR_HOLDING_MAXIMUM_ALLOWED_GEAR_IN_HEATING,
+    thermiaconst.ATTR_HOLDING_MINIMUM_ALLOWED_GEAR_IN_TAP_WATER,
+    thermiaconst.ATTR_HOLDING_MAXIMUM_ALLOWED_GEAR_IN_TAP_WATER,
+    thermiaconst.ATTR_HOLDING_MINIMUM_ALLOWED_GEAR_IN_POOL,
+    thermiaconst.ATTR_HOLDING_MAXIMUM_ALLOWED_GEAR_IN_POOL,
+    thermiaconst.ATTR_HOLDING_MINIMUM_ALLOWED_GEAR_IN_COOLING,
+    thermiaconst.ATTR_HOLDING_MAXIMUM_ALLOWED_GEAR_IN_COOLING,
 }

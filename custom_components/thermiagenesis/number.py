@@ -3,6 +3,7 @@ import logging
 from homeassistant.components.number import NumberEntity
 from homeassistant.const import PERCENTAGE
 from homeassistant.const import UnitOfTemperature
+import pythermiagenesis.const as thermiaconst
 from pythermiagenesis.const import REGISTERS
 
 from .const import ATTR_DEFAULT_ENABLED
@@ -13,6 +14,7 @@ from .const import ATTR_MAX_VALUE
 from .const import ATTR_MIN_VALUE
 from .const import ATTR_UNIT
 from .const import DOMAIN
+from .const import GEAR_LIMITS
 from .const import NUMBER_TYPES
 
 ATTR_COUNTER = "counter"
@@ -83,7 +85,20 @@ class ThermiaGenericNumber(NumberEntity):
 
     @property
     def native_max_value(self):
-        """Return the state of the sensor."""
+        """Return the highest allowed value.
+
+        Gear limits follow the compressor's own number of gears when the pump reports it, so
+        a 10-gear compressor can be set back to 10 (the static limit was 9).
+        """
+        if self.kind in GEAR_LIMITS:
+            gears = (self.coordinator.data or {}).get(
+                thermiaconst.ATTR_INPUT_COMPRESSOR_AVAILABLE_GEARS
+            )
+            try:
+                if gears is not None and int(gears) >= 1:
+                    return int(gears)
+            except (TypeError, ValueError):
+                pass
         return self.max
 
     @property
