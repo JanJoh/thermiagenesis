@@ -1,8 +1,11 @@
 import logging
 
+from homeassistant.components.sensor import SensorDeviceClass
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.components.sensor import SensorStateClass
+from pythermiagenesis.const import KEY_DATATYPE
 from pythermiagenesis.const import REGISTERS
+from pythermiagenesis.const import TYPE_STATUS
 
 from .const import ATTR_CLASS
 from .const import ATTR_DEFAULT_ENABLED
@@ -21,6 +24,46 @@ ATTR_COUNTER = "counter"
 ATTR_MODEL = "Diplomat Inverter Duo"
 
 _LOGGER = logging.getLogger(__name__)
+
+# The text pythermiagenesis decodes demand (TYPE_STATUS) registers to.
+# Anything it does not recognise comes back as "OFF".
+STATUS_OPTIONS = [
+    "OFF",
+    "Manual Operation",
+    "Defrost",
+    "Hot water",
+    "Heat",
+    "Cool",
+    "Pool",
+    "Anti legionella",
+    "Standby",
+    "No demand",
+]
+
+
+def is_status(kind):
+    """Return True if the register holds a demand status, shown as text."""
+    return REGISTERS[kind][KEY_DATATYPE] == TYPE_STATUS
+
+
+def sensor_device_class(kind):
+    if is_status(kind):
+        return SensorDeviceClass.ENUM
+    return SENSOR_TYPES[kind].get(ATTR_CLASS, None)
+
+
+def sensor_state_class(kind):
+    # A text state is not a measurement; with a state class the history
+    # view draws an empty statistics graph instead of the state timeline.
+    if is_status(kind):
+        return None
+    return SENSOR_TYPES[kind].get(ATTR_STATE_CLASS, SensorStateClass.MEASUREMENT)
+
+
+def sensor_options(kind):
+    if is_status(kind):
+        return STATUS_OPTIONS
+    return None
 
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
@@ -101,14 +144,17 @@ class ThermiaHeatpumpSensor(SensorEntity):
     @property
     def device_class(self):
         """Return de device class of the sensor."""
-        return SENSOR_TYPES[self.kind].get(ATTR_CLASS, None)
+        return sensor_device_class(self.kind)
 
     @property
     def state_class(self):
         """Return de device class of the sensor."""
-        return SENSOR_TYPES[self.kind].get(
-            ATTR_STATE_CLASS, SensorStateClass.MEASUREMENT
-        )
+        return sensor_state_class(self.kind)
+
+    @property
+    def options(self):
+        """Return the possible states of an enum sensor."""
+        return sensor_options(self.kind)
 
     @property
     def available(self):
@@ -201,14 +247,17 @@ class ThermiaGenericSensor(SensorEntity):
     @property
     def device_class(self):
         """Return de device class of the sensor."""
-        return SENSOR_TYPES[self.kind].get(ATTR_CLASS, None)
+        return sensor_device_class(self.kind)
 
     @property
     def state_class(self):
         """Return de device class of the sensor."""
-        return SENSOR_TYPES[self.kind].get(
-            ATTR_STATE_CLASS, SensorStateClass.MEASUREMENT
-        )
+        return sensor_state_class(self.kind)
+
+    @property
+    def options(self):
+        """Return the possible states of an enum sensor."""
+        return sensor_options(self.kind)
 
     @property
     def available(self):

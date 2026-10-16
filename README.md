@@ -81,6 +81,15 @@ Currently carries:
   that `_get_data` warn and skip rather than raise, so this class of mismatch
   can never again be fatal.
 
+- **Demand sensors are enum sensors.** *First/Second/Third Prioritised Demand*
+  and the five *Queued Demand* sensors hold text ("Heat", "Hot water",
+  "Anti legionella", …), but every sensor without an explicit `state_class`
+  defaulted to `measurement`. For those the history view draws a statistics
+  graph, which stays empty for text, so their history looked missing. Registers
+  the library decodes as `TYPE_STATUS` are now `device_class: enum` with the
+  library's status strings as `options` and no `state_class`, and show as a
+  state timeline.
+
 ## Reference
 
 Register numbers, units, scales and descriptions here are checked against
