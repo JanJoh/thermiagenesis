@@ -26,6 +26,11 @@ async def test_gear_limit_fallback_is_ten():
     assert number(MAX_HEAT, {}).native_min_value == 1
 
 
+async def test_heating_season_stop_has_outdoor_range():
+    n = number(thermiaconst.ATTR_HOLDING_HEATING_SEASON_STOP_TEMPERATURE, {})
+    assert (n.native_min_value, n.native_max_value) == (5, 25)
+
+
 async def test_other_numbers_keep_their_range():
     kind = thermiaconst.ATTR_HOLDING_COMFORT_WHEEL_SETTING
     n = number(kind, {GEARS: 10})

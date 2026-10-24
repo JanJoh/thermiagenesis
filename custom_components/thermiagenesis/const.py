@@ -1913,6 +1913,10 @@ NUMBER_TYPES = {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Heating Season Stop Temperature",
         ATTR_UNIT: UNIT_TEMPERATURE,
+        # Outdoor temperature above which heating stops. The generic -40..100 range let a
+        # slider land on 40, which keeps the heating season on all year.
+        ATTR_MIN_VALUE: 5,
+        ATTR_MAX_VALUE: 25,
         ATTR_DEFAULT_ENABLED: False,
         ATTR_CLASS: SensorDeviceClass.TEMPERATURE,
         ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
