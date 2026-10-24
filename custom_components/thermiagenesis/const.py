@@ -761,7 +761,7 @@ BINARY_SENSOR_TYPES = {
     thermiaconst.ATTR_DINPUT_INTERNAL_ADDITIONAL_HEATER_ACTIVE: {
         ATTR_LABEL: "Internal Additional Heater Active",
         ATTR_CLASS: CLASS_STATE,
-        ATTR_DEFAULT_ENABLED: False,
+        ATTR_DEFAULT_ENABLED: True,
     },
     thermiaconst.ATTR_DINPUT_HGW_REGULATION_CONTROL_SIGNAL: {
         ATTR_LABEL: "Hgw Regulation Control Signal",
@@ -1208,7 +1208,7 @@ SENSOR_TYPES = {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Internal Additional Heater Current Step",
         ATTR_UNIT: None,
-        ATTR_DEFAULT_ENABLED: False,
+        ATTR_DEFAULT_ENABLED: True,
     },
     thermiaconst.ATTR_INPUT_BUFFER_TANK_CHARGE_SET_POINT: {
         ATTR_ICON: ICON_INPUT,

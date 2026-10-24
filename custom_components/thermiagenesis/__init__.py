@@ -21,6 +21,8 @@ from pythermiagenesis.const import ATTR_INPUT_SOFTWARE_VERSION_MAJOR
 from pythermiagenesis.const import ATTR_INPUT_SOFTWARE_VERSION_MICRO
 from pythermiagenesis.const import ATTR_INPUT_SOFTWARE_VERSION_MINOR
 from pythermiagenesis.const import ATTR_INPUT_POOL_SUPPLY_LINE_TEMPERATURE
+from pythermiagenesis.const import ATTR_DINPUT_INTERNAL_ADDITIONAL_HEATER_ACTIVE
+from pythermiagenesis.const import ATTR_INPUT_INTERNAL_ADDITIONAL_HEATER_CURRENT_STEP
 from pythermiagenesis.const import KEY_SCALE
 from pythermiagenesis.const import MODEL_MEGA
 from pythermiagenesis.const import REG_DISCRETE_INPUT
@@ -69,6 +71,15 @@ REGISTER_RANGES[MODEL_MEGA][REG_DISCRETE_INPUT] = [[0, 4], [9, 87], [199, 247]]
 #     input 120  Pool return line temperature (EM)   degC  scale 100
 REGISTERS[ATTR_INPUT_POOL_SUPPLY_LINE_TEMPERATURE][KEY_SCALE] = 100
 REGISTERS[ATTR_INPUT_POOL_RETURN_LINE_TEMPERATURE][KEY_SCALE] = 100
+
+# The internal immersion heater is flagged inverter-only in the library, so on
+# the mega platform neither entity was created:
+#     input 67   Internal additional heater current step
+#     dinput 222 Internal additional heater active
+# Both answer on a Calibra 8E (read-only probe, 2026-10-24: 0 and off while the
+# heater was idle), and both addresses lie inside the mega ranges.
+REGISTERS[ATTR_INPUT_INTERNAL_ADDITIONAL_HEATER_CURRENT_STEP][MODEL_MEGA] = True
+REGISTERS[ATTR_DINPUT_INTERNAL_ADDITIONAL_HEATER_ACTIVE][MODEL_MEGA] = True
 
 PLATFORMS = ["sensor", "binary_sensor", "climate", "switch", "number"]
 
