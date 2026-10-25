@@ -90,6 +90,23 @@ Currently carries:
   library's status strings as `options` and no `state_class`, and show as a
   state timeline.
 
+- **Gear limits follow the compressor.** The *Minimum/Maximum Allowed Gear In …*
+  numbers (heating, tap water, pool, cooling) had a static maximum of 9, so a 10-gear compressor (Diplomat
+  Inverter Duo, Calibra) could never be set back to its own top gear once
+  lowered. The maximum now follows `input_compressor_available_gears` when the
+  pump reports it, and falls back to the static limit otherwise.
+
+- **Heating season stop limited to 5–25 °C.** The number used the generic
+  −40–100 °C range, so a slip of the slider could set it to 40 °C. That keeps
+  the heating season active all year; it happened on a real pump and went
+  unnoticed for a month.
+
+- **Internal immersion heater on `mega`.** `pythermiagenesis` flags
+  `input 67` (internal additional heater, current step) and `dinput 222`
+  (internal additional heater active) as inverter-only, so a Calibra
+  configured as `mega` never got them. Both answer on a Calibra 8E; the fork
+  patches the two flags at setup and enables the entities by default.
+
 ## Reference
 
 Register numbers, units, scales and descriptions here are checked against
