@@ -1,7 +1,7 @@
 import logging
 
 from homeassistant.components.switch import SwitchEntity
-from pythermiagenesis.const import REGISTERS
+from thermia_genesis_modbus.const import REGISTERS
 
 from .const import ATTR_CLASS
 from .const import ATTR_DEFAULT_ENABLED

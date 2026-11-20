@@ -3,8 +3,8 @@ import logging
 from homeassistant.components.number import NumberEntity
 from homeassistant.const import PERCENTAGE
 from homeassistant.const import UnitOfTemperature
-import pythermiagenesis.const as thermiaconst
-from pythermiagenesis.const import REGISTERS
+import thermia_genesis_modbus.const as thermiaconst
+from thermia_genesis_modbus.const import REGISTERS
 
 from .const import ATTR_DEFAULT_ENABLED
 from .const import ATTR_ICON

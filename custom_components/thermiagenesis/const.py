@@ -1,4 +1,4 @@
-import pythermiagenesis.const as thermiaconst
+import thermia_genesis_modbus.const as thermiaconst
 from homeassistant.components.climate.const import ATTR_CURRENT_TEMPERATURE
 from homeassistant.components.climate.const import ATTR_MAX_TEMP
 from homeassistant.components.climate.const import ATTR_MIN_TEMP

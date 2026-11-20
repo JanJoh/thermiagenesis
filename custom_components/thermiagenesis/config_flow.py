@@ -7,9 +7,9 @@ from homeassistant.const import CONF_HOST
 from homeassistant.const import CONF_PORT
 from homeassistant.const import CONF_TYPE
 from homeassistant.helpers.selector import selector
-from pythermiagenesis import ThermiaConnectionError
-from pythermiagenesis import ThermiaGenesis
-from pythermiagenesis.const import ATTR_COIL_ENABLE_HEAT
+from thermia_genesis_modbus import ThermiaConnectionError
+from thermia_genesis_modbus import ThermiaGenesis
+from thermia_genesis_modbus.const import ATTR_COIL_ENABLE_HEAT
 
 from .const import DOMAIN  # pylint:disable=unused-import
 

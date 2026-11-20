@@ -3,9 +3,9 @@ import logging
 from homeassistant.components.sensor import SensorDeviceClass
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.components.sensor import SensorStateClass
-from pythermiagenesis.const import KEY_DATATYPE
-from pythermiagenesis.const import REGISTERS
-from pythermiagenesis.const import TYPE_STATUS
+from thermia_genesis_modbus.const import KEY_DATATYPE
+from thermia_genesis_modbus.const import REGISTERS
+from thermia_genesis_modbus.const import TYPE_STATUS
 
 from .const import ATTR_CLASS
 from .const import ATTR_DEFAULT_ENABLED
@@ -25,7 +25,7 @@ ATTR_MODEL = "Diplomat Inverter Duo"
 
 _LOGGER = logging.getLogger(__name__)
 
-# The text pythermiagenesis decodes demand (TYPE_STATUS) registers to.
+# The text thermia_genesis_modbus decodes demand (TYPE_STATUS) registers to.
 # Anything it does not recognise comes back as "OFF".
 STATUS_OPTIONS = [
     "OFF",
