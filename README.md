@@ -3,6 +3,27 @@
 > This is a personal convenience fork. All credit belongs to [@CJNE](https://github.com/CJNE) and contributors.
 > Please star, file issues, and contribute upstream: [CJNE/thermiagenesis](https://github.com/CJNE/thermiagenesis).
 
+## Updating from a pre-1.0.0 install (HACS)
+
+**If you added this integration as a HACS custom repository before 2026-11-20,
+HACS may not offer the 1.0.0 update** (it errors with something like *"unknown
+repository ID"*). The project was re-created as a standalone, non-fork
+repository, which changed its GitHub repository ID — and HACS keys custom
+repositories by that ID.
+
+Re-point HACS at it:
+
+1. HACS → **Thermia Genesis** → ⋮ → **Remove** (this removes the HACS *download*
+   only — not your devices or entities).
+2. HACS → ⋮ → **Custom repositories** → remove `JanJoh/thermiagenesis` if it's
+   still listed, then **add** it again (category *Integration*).
+3. Reinstall **Thermia Genesis** (now 1.0.0) and **restart** Home Assistant.
+
+**Do not** delete the integration from *Settings → Devices & Services* — that
+removes the config entry and erases your entity renames, areas, and anything
+referencing those entities. The steps above touch only the HACS download, so
+your devices, entities, history and automations are preserved.
+
 ## Why this fork exists
 
 To install via HACS, and to carry fixes that aren't in upstream yet — unmerged
