@@ -23,6 +23,8 @@ from .const import ATTR_STATUS
 from .const import CLIMATE_TYPES
 from .const import DOMAIN
 from .const import KEY_STATUS_VALUE
+from .const import ROOM_TEMPERATURE_REGISTER
+from .const import room_temperature_is_present
 
 ATTR_MODEL = "Diplomat Inverter Duo"
 
@@ -92,7 +94,11 @@ class ThermiaClimateSensor(ClimateEntity):
     @property
     def current_temperature(self):
         """Return the current temperature."""
-        val = self.coordinator.data.get(self.meta[ATTR_CURRENT_TEMPERATURE])
+        register = self.meta[ATTR_CURRENT_TEMPERATURE]
+        val = self.coordinator.data.get(register)
+        if register == ROOM_TEMPERATURE_REGISTER and not room_temperature_is_present(val):
+            # No room sensor wired: input 121 reads a ~200 C placeholder.
+            return None
         return val
 
     @property

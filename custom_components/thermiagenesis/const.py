@@ -25,6 +25,23 @@ ATTR_ADDR = "address"
 ATTR_MAX_VALUE = "max_value"
 ATTR_MIN_VALUE = "min_value"
 
+# --- Missing room-sensor handling (issue #3) --------------------------------
+# input_room_temperature_sensor (input 121, scale 10) returns a large
+# placeholder (~200 C) when no room sensor is wired to the heat pump. A real
+# room sensor never reads anywhere near this, so an out-of-range reading means
+# "no sensor": the sensor entity reports unavailable and the climate entity
+# reports no current temperature.
+# https://github.com/JanJoh/thermiagenesis/issues/3
+ROOM_TEMPERATURE_REGISTER = thermiaconst.ATTR_INPUT_ROOM_TEMPERATURE_SENSOR
+ROOM_TEMPERATURE_MIN = -50  # C
+ROOM_TEMPERATURE_MAX = 80  # C
+
+
+def room_temperature_is_present(value):
+    """Return False when input_room_temperature_sensor holds its no-sensor placeholder."""
+    return value is not None and ROOM_TEMPERATURE_MIN <= value <= ROOM_TEMPERATURE_MAX
+
+
 KEY_STATE_ATTRIBUTES = "state_attrs"
 KEY_STATUS_VALUE = "status_value"
 

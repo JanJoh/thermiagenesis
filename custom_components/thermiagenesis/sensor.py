@@ -18,7 +18,9 @@ from .const import DOMAIN
 from .const import HEATPUMP_ALARMS
 from .const import HEATPUMP_ATTRIBUTES
 from .const import HEATPUMP_SENSOR
+from .const import ROOM_TEMPERATURE_REGISTER
 from .const import SENSOR_TYPES
+from .const import room_temperature_is_present
 
 ATTR_COUNTER = "counter"
 ATTR_MODEL = "Diplomat Inverter Duo"
@@ -262,7 +264,12 @@ class ThermiaGenericSensor(SensorEntity):
     @property
     def available(self):
         """Return True if entity is available."""
-        return self.coordinator.last_update_success
+        if not self.coordinator.last_update_success:
+            return False
+        if self.kind == ROOM_TEMPERATURE_REGISTER:
+            # No room sensor wired: input 121 reads a ~200 C placeholder.
+            return room_temperature_is_present(self.coordinator.data.get(self.kind))
+        return True
 
     @property
     def should_poll(self):
