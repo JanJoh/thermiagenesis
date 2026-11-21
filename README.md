@@ -23,20 +23,20 @@ Requires Home Assistant **2024.1.0** or newer.
 ## Updating from a pre-1.0.0 install (HACS)
 
 **If you added this integration as a HACS custom repository before 2026-11-20,
-HACS may not offer the 1.0.0 update** (it errors with something like *"unknown
-repository ID"*). The project was re-created as a standalone, non-fork
+HACS may not offer the 1.0.0 update** (it errors with something like _"unknown
+repository ID"_). The project was re-created as a standalone, non-fork
 repository, which changed its GitHub repository ID — and HACS keys custom
 repositories by that ID.
 
 Re-point HACS at it:
 
-1. HACS → **Thermia Genesis** → ⋮ → **Remove** (this removes the HACS *download*
+1. HACS → **Thermia Genesis** → ⋮ → **Remove** (this removes the HACS _download_
    only — not your devices or entities).
 2. HACS → ⋮ → **Custom repositories** → remove `JanJoh/thermiagenesis` if it's
-   still listed, then **add** it again (category *Integration*).
+   still listed, then **add** it again (category _Integration_).
 3. Reinstall **Thermia Genesis** (now 1.0.0+) and **restart** Home Assistant.
 
-**Do not** delete the integration from *Settings → Devices & Services* — that
+**Do not** delete the integration from _Settings → Devices & Services_ — that
 removes the config entry and erases your entity renames, areas, and anything
 referencing those entities. The steps above touch only the HACS download, so
 your devices, entities, history and automations are preserved.
@@ -51,11 +51,11 @@ Relative to the original integration and library, this version carries:
 
 - **Fixed the reported firmware version.** Two separate faults. First, every
   `device_info` used `coordinator.data.get("firmware")`, but `coordinator.data`
-  is keyed by *register name* and no register is called `firmware` — so the
+  is keyed by _register name_ and no register is called `firmware` — so the
   lookup returned `None` unconditionally.
 
   Second, `ThermiaGenesis.firmware` cannot be used either: the library sets it
-  from `self.data` *before* overwriting `self.data` with the freshly read
+  from `self.data` _before_ overwriting `self.data` with the freshly read
   values, so it always lags one refresh behind. On the first refresh `self.data`
   is still empty, the resulting `KeyError` is swallowed by the library's own
   `except KeyError`, and the attribute stays `None` — and `device_info` is built
@@ -67,7 +67,7 @@ Relative to the original integration and library, this version carries:
   info.
 
 - **No more `unknown` entities for 30 seconds after every reload.** Setup called
-  `coordinator.async_refresh()` *before* forwarding the platform setups — at
+  `coordinator.async_refresh()` _before_ forwarding the platform setups — at
   which point no entity had registered anything, so the coordinator asked for
   zero registers and stored an empty dict. Entities are then added with
   `async_add_entities(..., False)`, so every one read `None` until the next
@@ -85,18 +85,18 @@ Relative to the original integration and library, this version carries:
   platform setups quite correctly creates entities for them — yet they fell
   outside the declared mega dinput ranges `[[0, 3], [9, 83], [199, 247]]`:
 
-  | addr | register |
-  |---|---|
-  | 4 | `dinput_alarm_active_class_e` |
-  | 84 | `dinput_primary_unit_conflict_alarm` |
-  | 85 | `dinput_primary_unit_no_secondary_alarm` |
-  | 86 | `dinput_oil_boost_in_progress` |
+  | addr | register                                 |
+  | ---- | ---------------------------------------- |
+  | 4    | `dinput_alarm_active_class_e`            |
+  | 84   | `dinput_primary_unit_conflict_alarm`     |
+  | 85   | `dinput_primary_unit_no_secondary_alarm` |
+  | 86   | `dinput_oil_boost_in_progress`           |
 
   Enabling any of them left `_get_data()` unable to place the address in a
   block, and the unguarded `in_range[0]` raised `IndexError`. Because that
   happens inside the coordinator's `_async_update_data`, a single such register
   failed the whole refresh and **every** entity the integration owns went
-  unavailable. Observed: enabling *Alarm Active Class E* on a Calibra produced
+  unavailable. Observed: enabling _Alarm Active Class E_ on a Calibra produced
   1581 consecutive failures and took ~400 entities down for six hours.
 
   All four sit directly against registers already in range — 0–3 are alarm
@@ -108,8 +108,8 @@ Relative to the original integration and library, this version carries:
   `thermia-genesis-modbus` table now declares the correct ranges
   (`[[0, 4], [9, 87], [199, 247]]`).
 
-- **Demand sensors are enum sensors.** *First/Second/Third Prioritised Demand*
-  and the five *Queued Demand* sensors hold text ("Heat", "Hot water",
+- **Demand sensors are enum sensors.** _First/Second/Third Prioritised Demand_
+  and the five _Queued Demand_ sensors hold text ("Heat", "Hot water",
   "Anti legionella", …), but every sensor without an explicit `state_class`
   defaulted to `measurement`. For those the history view draws a statistics
   graph, which stays empty for text, so their history looked missing. Registers
@@ -117,7 +117,7 @@ Relative to the original integration and library, this version carries:
   status strings as `options` and no `state_class`, and show as a state
   timeline.
 
-- **Gear limits follow the compressor.** The *Minimum/Maximum Allowed Gear In …*
+- **Gear limits follow the compressor.** The _Minimum/Maximum Allowed Gear In …_
   numbers (heating, tap water, pool, cooling) had a static maximum of 9, so a
   10-gear compressor (Diplomat Inverter Duo, Calibra) could never be set back to
   its own top gear once lowered. The maximum now follows
@@ -182,7 +182,7 @@ whereas zero current or zero power is ambiguous.
   the hardware: the library models only the Diplomat Inverter and the Mega. A
   Calibra is neither, and `mega` is the closer fit — coil 59, condenser pump
   continuous operation, is inside the mega ranges and outside the inverter
-  ones. But a Calibra also answers registers outside *both* maps, so the tables
+  ones. But a Calibra also answers registers outside _both_ maps, so the tables
   are incomplete for it either way.
 - The library's per-model flags conflate **model capability** with **fitted
   hardware**. Sixteen registers documented in the Mega spec — the electric

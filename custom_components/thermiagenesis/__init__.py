@@ -1,4 +1,5 @@
 """The ThermiaGenesis component."""
+
 import asyncio
 import logging
 import time
@@ -9,10 +10,10 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST
 from homeassistant.const import CONF_PORT
 from homeassistant.const import CONF_TYPE
-from homeassistant.helpers.typing import ConfigType
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers import config_validation as cv
+from homeassistant.helpers.typing import ConfigType
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.helpers.update_coordinator import UpdateFailed
 from thermia_genesis_modbus import ThermiaGenesis
@@ -21,7 +22,6 @@ from thermia_genesis_modbus.const import ATTR_INPUT_SOFTWARE_VERSION_MICRO
 from thermia_genesis_modbus.const import ATTR_INPUT_SOFTWARE_VERSION_MINOR
 
 from .const import DOMAIN
-
 
 PLATFORMS = ["sensor", "binary_sensor", "climate", "switch", "number"]
 
@@ -127,7 +127,7 @@ class ThermiaGenesisDataUpdateCoordinator(DataUpdateCoordinator):
                 f"{datetime.now()} Fetching heatpump data took {end_time - start_time} s"
             )
 
-        except (ConnectionError) as error:
+        except ConnectionError as error:
             raise UpdateFailed(error)
         return data
 
@@ -135,7 +135,7 @@ class ThermiaGenesisDataUpdateCoordinator(DataUpdateCoordinator):
         """Set data via library."""
         try:
             await self.thermia.async_set(register, value)
-        except (ConnectionError) as error:
+        except ConnectionError as error:
             raise UpdateFailed(error)
         return self.thermia.data
 

@@ -1,4 +1,5 @@
 """Demand registers are enum sensors, so their history shows as a timeline."""
+
 from types import SimpleNamespace
 
 import thermia_genesis_modbus.const as thermiaconst

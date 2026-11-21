@@ -1,9 +1,9 @@
 import logging
 
+import thermia_genesis_modbus.const as thermiaconst
 from homeassistant.components.number import NumberEntity
 from homeassistant.const import PERCENTAGE
 from homeassistant.const import UnitOfTemperature
-import thermia_genesis_modbus.const as thermiaconst
 from thermia_genesis_modbus.const import REGISTERS
 
 from .const import ATTR_DEFAULT_ENABLED

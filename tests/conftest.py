@@ -1,4 +1,5 @@
 """Global fixtures for Thermia Genesis integration."""
+
 from unittest.mock import patch
 
 import pytest

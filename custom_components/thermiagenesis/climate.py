@@ -1,4 +1,5 @@
-""" Thermia Genesis climate sensors."""
+"""Thermia Genesis climate sensors."""
+
 import logging
 
 from homeassistant.components.climate import ClimateEntity
@@ -23,8 +24,8 @@ from .const import ATTR_STATUS
 from .const import CLIMATE_TYPES
 from .const import DOMAIN
 from .const import KEY_STATUS_VALUE
-from .const import ROOM_TEMPERATURE_REGISTER
 from .const import room_temperature_is_present
+from .const import ROOM_TEMPERATURE_REGISTER
 
 ATTR_MODEL = "Diplomat Inverter Duo"
 
@@ -96,7 +97,9 @@ class ThermiaClimateSensor(ClimateEntity):
         """Return the current temperature."""
         register = self.meta[ATTR_CURRENT_TEMPERATURE]
         val = self.coordinator.data.get(register)
-        if register == ROOM_TEMPERATURE_REGISTER and not room_temperature_is_present(val):
+        if register == ROOM_TEMPERATURE_REGISTER and not room_temperature_is_present(
+            val
+        ):
             # No room sensor wired: input 121 reads a ~200 C placeholder.
             return None
         return val
