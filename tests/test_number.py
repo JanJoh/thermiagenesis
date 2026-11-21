@@ -2,7 +2,7 @@
 
 from types import SimpleNamespace
 
-import pythermiagenesis.const as thermiaconst
+import thermia_genesis_modbus.const as thermiaconst
 from custom_components.thermiagenesis.number import ThermiaGenericNumber
 
 MAX_HEAT = thermiaconst.ATTR_HOLDING_MAXIMUM_ALLOWED_GEAR_IN_HEATING

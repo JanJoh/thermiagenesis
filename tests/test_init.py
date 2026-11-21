@@ -1,4 +1,5 @@
 """Test Thermia Genesis setup process."""
+
 import pytest
 from custom_components.thermiagenesis import (
     async_reload_entry,

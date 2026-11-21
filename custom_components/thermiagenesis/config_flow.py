@@ -1,4 +1,5 @@
 """Adds config flow for ThermiaGenesis heat pump."""
+
 import logging
 
 import voluptuous as vol

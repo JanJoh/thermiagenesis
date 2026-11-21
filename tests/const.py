@@ -1,4 +1,5 @@
 """Constants for Thermia Genesis tests."""
+
 from custom_components.thermiagenesis.const import (
     CONF_PASSWORD,
 )

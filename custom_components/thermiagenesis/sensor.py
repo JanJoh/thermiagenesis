@@ -18,9 +18,9 @@ from .const import DOMAIN
 from .const import HEATPUMP_ALARMS
 from .const import HEATPUMP_ATTRIBUTES
 from .const import HEATPUMP_SENSOR
+from .const import room_temperature_is_present
 from .const import ROOM_TEMPERATURE_REGISTER
 from .const import SENSOR_TYPES
-from .const import room_temperature_is_present
 
 ATTR_COUNTER = "counter"
 ATTR_MODEL = "Diplomat Inverter Duo"
