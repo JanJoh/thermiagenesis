@@ -1,7 +1,8 @@
 """Demand registers are enum sensors, so their history shows as a timeline."""
 from types import SimpleNamespace
 
-import pythermiagenesis.const as thermiaconst
+import thermia_genesis_modbus.const as thermiaconst
+from custom_components.thermiagenesis.const import ROOM_TEMPERATURE_REGISTER
 from custom_components.thermiagenesis.const import SENSOR_TYPES
 from custom_components.thermiagenesis.sensor import STATUS_OPTIONS
 from custom_components.thermiagenesis.sensor import ThermiaGenericSensor
@@ -51,3 +52,19 @@ async def test_numeric_sensors_are_unchanged():
     assert s.device_class is None
     assert s.state_class == SensorStateClass.MEASUREMENT
     assert s.options is None
+
+
+def room_sensor(value):
+    coord = SimpleNamespace(
+        data={ROOM_TEMPERATURE_REGISTER: value}, last_update_success=True
+    )
+    return ThermiaGenericSensor(coord, ROOM_TEMPERATURE_REGISTER, {})
+
+
+async def test_room_temperature_unavailable_without_sensor():
+    # A plausible indoor reading is available.
+    assert room_sensor(21.5).available is True
+    # input 121 returns a ~200 C placeholder when no room sensor is wired; the
+    # entity must report unavailable rather than passing 200 C through (#3).
+    assert room_sensor(200.0).available is False
+    assert room_sensor(None).available is False

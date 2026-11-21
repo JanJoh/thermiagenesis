@@ -10,8 +10,11 @@ on:
   schedule:
     - cron: "0 0 * * *"
 
+permissions:
+  contents: read
+
 env:
-  DEFAULT_PYTHON: 3.9
+  DEFAULT_PYTHON: "3.13"
 
 jobs:
   pre-commit:
