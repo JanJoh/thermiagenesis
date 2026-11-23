@@ -20,6 +20,17 @@ repository is the Home Assistant integration built on top of it.
 
 Requires Home Assistant **2024.1.0** or newer.
 
+### Coming from CJNE's original integration?
+
+**Uninstall it first.** Recent Home Assistant/HACS won't overwrite a
+`custom_components/thermiagenesis` folder that's owned by a _different_ source,
+so installing this on top of [CJNE's](https://github.com/CJNE/thermiagenesis)
+can fail to copy the files. Remove CJNE's version in HACS (or delete its
+`custom_components/thermiagenesis` folder), restart Home Assistant, then install
+this one. Your config entry, entities, history and automations are keyed by
+domain and entity ID, so they carry over unchanged — this only swaps which
+source provides the code.
+
 ## Updating from a pre-1.0.0 install (HACS)
 
 **If you added this integration as a HACS custom repository before 2026-11-20,
