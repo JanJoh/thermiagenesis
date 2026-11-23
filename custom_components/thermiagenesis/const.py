@@ -118,8 +118,11 @@ CLIMATE_TYPES = {
         # ATTR_CURRENT_TEMPERATURE: ATTR_INPUT_SYSTEM_SUPPLY_LINE_CALCULATED_SET_POINT,
         ATTR_CURRENT_TEMPERATURE: thermiaconst.ATTR_INPUT_ROOM_TEMPERATURE_SENSOR,
         ATTR_TEMPERATURE: thermiaconst.ATTR_HOLDING_COMFORT_WHEEL_SETTING,
-        ATTR_MIN_TEMP: 10,
-        ATTR_MAX_TEMP: 40,
+        # The comfort wheel is a heat-curve offset of -9..+9 around a fixed
+        # 20 C nominal, i.e. 11..29 C absolute. Clamp to that range so the dial
+        # can't write a value the pump rejects. See issue #7.
+        ATTR_MIN_TEMP: 11,
+        ATTR_MAX_TEMP: 29,
         ATTR_ENABLED: thermiaconst.ATTR_COIL_ENABLE_HEAT,
         ATTR_DEFAULT_ENABLED: True,
         KEY_STATUS_VALUE: "Heat",
