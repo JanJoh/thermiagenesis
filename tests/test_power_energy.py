@@ -87,3 +87,19 @@ def test_plain_sensors_still_report_the_raw_value():
     kind = thermiaconst.ATTR_INPUT_CALCULATED_DEMAND_HEAT
     assert sensor(kind, {kind: -1.01}).state == -1.01
     assert sensor(kind, {kind: 0}).state == 0
+
+
+def test_gears_are_whole_numbers():
+    """The register scales them by 100, so the library hands over 10.0."""
+    for kind in (
+        thermiaconst.ATTR_INPUT_COMPRESSOR_AVAILABLE_GEARS,
+        thermiaconst.ATTR_INPUT_COMPRESSOR_CURRENT_GEAR,
+    ):
+        state = sensor(kind, {kind: 10.0}).state
+        assert state == 10
+        assert isinstance(state, int)
+        assert sensor(kind, {}).state is None
+    # Everything else keeps its decimals.
+    power = thermiaconst.ATTR_INPUT_CURRENT_CONSUMED_POWER
+    assert sensor(power, {power: 1.0}).state == 1.0
+    assert isinstance(sensor(power, {power: 1.0}).state, float)

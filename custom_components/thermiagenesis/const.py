@@ -25,6 +25,7 @@ ATTR_ADDR = "address"
 ATTR_MAX_VALUE = "max_value"
 ATTR_MIN_VALUE = "min_value"
 ATTR_OPTIONS = "options"
+ATTR_WHOLE_NUMBER = "whole_number"
 
 # --- Missing room-sensor handling (issue #3) --------------------------------
 # input_room_temperature_sensor (input 121, scale 10) returns a large
@@ -895,6 +896,8 @@ SENSOR_TYPES = {
         ATTR_UNIT: None,
         ATTR_DEFAULT_ENABLED: False,
         ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
+        # Scaled by 100 in the register, so it arrives as 10.0; a gear is a whole number.
+        ATTR_WHOLE_NUMBER: True,
     },
     thermiaconst.ATTR_INPUT_COMPRESSOR_SPEED_RPM: {
         ATTR_ICON: ICON_INPUT,
@@ -1202,6 +1205,7 @@ SENSOR_TYPES = {
         ATTR_LABEL: "Compressor Current Gear",
         ATTR_UNIT: None,
         ATTR_DEFAULT_ENABLED: False,
+        ATTR_WHOLE_NUMBER: True,
     },
     thermiaconst.ATTR_INPUT_QUEUED_DEMAND_FIRST_PRIORITY: {
         ATTR_ICON: ICON_INPUT,

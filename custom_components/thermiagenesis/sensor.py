@@ -14,6 +14,7 @@ from .const import ATTR_LABEL
 from .const import ATTR_OPTIONS
 from .const import ATTR_STATE_CLASS
 from .const import ATTR_UNIT
+from .const import ATTR_WHOLE_NUMBER
 from .const import DOMAIN
 from .const import HEATPUMP_ALARMS
 from .const import HEATPUMP_ATTRIBUTES
@@ -83,10 +84,15 @@ def sensor_state(kind, value):
     """Return the state for a raw register value.
 
     A register with named values shows the name; a value without a name is
-    unknown, since an enum sensor may only report one of its options.
+    unknown, since an enum sensor may only report one of its options. A whole
+    number that the register scales (a gear, sent times 100) loses its ".0".
     """
     names = named_values(kind)
-    if names is None or value is None:
+    if value is None:
+        return None
+    if names is None:
+        if SENSOR_TYPES[kind].get(ATTR_WHOLE_NUMBER) and isinstance(value, float):
+            return round(value)
         return value
     try:
         return names.get(int(value))

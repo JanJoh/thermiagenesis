@@ -178,10 +178,25 @@ Relative to the original integration and library, this version carries:
   | holding 124 | Power Consumption Control Mode (read-only) |
   | holding 125 | Input Power Limit (kW, read-only)          |
 
-  Inputs 331–334 are in no Thermia document. On a Calibra they follow roughly
-  the last 24 hours — 16 kWh reported when an external meter had counted 16.4
-  kWh over the preceding day — and 333 is 332 divided by 331. They are therefore
-  plain measurements, not totals, and do not belong in the Energy dashboard.
+  Inputs 331–334 are in no Thermia document. On a Calibra they hold about a
+  day's worth — 16 kWh reported when an external meter had counted 16.4 kWh
+  over the preceding 24 hours — and 333 is 332 divided by 331. They are
+  therefore plain measurements, not totals, and do not belong in the Energy
+  dashboard.
+
+  None of this needs the electric meter module: the power and energy values are
+  the controller's own estimate, not a measurement. Checked on a Calibra Eco 8
+  without the module, against a separate meter on the pump's supply:
+
+  |                                            | Pump    | Meter         |
+  | ------------------------------------------ | ------- | ------------- |
+  | Electrical power, steady load              | 1.16 kW | 1.19 kW       |
+  | Electrical energy, a day in early November | 16 kWh  | 16.4 kWh      |
+  | Electrical energy, a day in late November  | 33 kWh  | 32.7–35.0 kWh |
+
+  So the estimate ran about 2 % under the meter on power. The second energy row
+  gives a range because it is not yet clear whether the pump reports the last 24
+  hours (35.0 kWh on the meter) or the previous calendar day (32.7 kWh).
 
   The control mode is left a number, because its meaning depends on how the pump
   is set up: in SG-Ready mode 0 normal, 1 load-up, 2 EVU, 3 boost; in PL/LU mode
@@ -193,6 +208,10 @@ Relative to the original integration and library, this version carries:
 
   A sensor your pump does not have no longer disturbs the others: the register
   block it sits in is skipped and the rest are read as usual.
+
+- **Gears are whole numbers.** _Compressor Available Gears_ and _Compressor
+  Current Gear_ showed `10.0`, because the register scales them by 100. They
+  now show `10`.
 
 - **Internal immersion heater on `mega`.** `input 67` (internal additional
   heater, current step) and `dinput 222` (internal additional heater active)
