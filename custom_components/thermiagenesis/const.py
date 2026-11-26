@@ -2213,6 +2213,12 @@ NUMBER_TYPES = {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Gear Shift Delay Heating",
         ATTR_UNIT: UNIT_SECONDS,
+        # Seconds, not a percentage: the generic 0..100 fallback sat below the pump's
+        # own default (300 s on heating and pool), so the control could not even hold
+        # the current value. Thermia does not publish a limit for this register;
+        # 600 s is confirmed accepted on a pump, 1800 leaves headroom above that.
+        ATTR_MIN_VALUE: 0,
+        ATTR_MAX_VALUE: 1800,
         ATTR_DEFAULT_ENABLED: False,
         ATTR_CLASS: SensorDeviceClass.DURATION,
         ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
@@ -2221,6 +2227,8 @@ NUMBER_TYPES = {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Gear Shift Delay Pool",
         ATTR_UNIT: UNIT_SECONDS,
+        ATTR_MIN_VALUE: 0,
+        ATTR_MAX_VALUE: 1800,
         ATTR_DEFAULT_ENABLED: False,
         ATTR_CLASS: SensorDeviceClass.DURATION,
         ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
@@ -2229,6 +2237,8 @@ NUMBER_TYPES = {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Gear Shift Delay Cooling",
         ATTR_UNIT: UNIT_SECONDS,
+        ATTR_MIN_VALUE: 0,
+        ATTR_MAX_VALUE: 1800,
         ATTR_DEFAULT_ENABLED: False,
         ATTR_CLASS: SensorDeviceClass.DURATION,
         ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
