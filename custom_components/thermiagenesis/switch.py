@@ -6,12 +6,11 @@ from thermia_genesis_modbus.const import REGISTERS
 from .const import ATTR_CLASS
 from .const import ATTR_DEFAULT_ENABLED
 from .const import ATTR_LABEL
-from .const import ATTR_MANUFACTURER
 from .const import DOMAIN
 from .const import SWITCH_TYPES
+from .entity import build_device_info
 
 ATTR_COUNTER = "counter"
-ATTR_MODEL = "Diplomat Inverter Duo"
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -22,13 +21,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 
     sensors = []
 
-    device_info = {
-        "identifiers": {(DOMAIN, ATTR_MODEL)},
-        "name": ATTR_MODEL,
-        "manufacturer": ATTR_MANUFACTURER,
-        "model": ATTR_MODEL,
-        "sw_version": coordinator.firmware,
-    }
+    device_info = build_device_info(coordinator, config_entry)
 
     for sensor in SWITCH_TYPES:
         if REGISTERS[sensor][coordinator.kind]:

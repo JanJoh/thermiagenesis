@@ -18,7 +18,9 @@ Thermia Genesis is in the default [HACS](https://hacs.xyz/) catalog.
 2. Restart Home Assistant.
 3. **Settings → Devices & Services → + Add Integration → Thermia Genesis**, and
    enter the pump's Modbus host, port (`502`), and register map — `inverter` or
-   `mega` (a Calibra uses `mega`).
+   `mega` (a Calibra uses `mega`). **Model** is optional: whatever you type
+   (say _Calibra 8_ or _Sigrin 13 Duo_) is shown as the device's model, and you
+   can change it later under **Configure**.
 
 Requires Home Assistant **2024.1.0** or newer.
 
@@ -152,6 +154,14 @@ Relative to the original integration and library, this version carries:
   current value. They now accept 0–1800 s
   ([#14](https://github.com/JanJoh/thermiagenesis/issues/14)).
 
+- **The pump's model is yours to set.** Every device used to report the model
+  _Diplomat Inverter Duo_, whatever the pump was. Setup now has an optional
+  **Model** field, and **Configure** on an existing installation changes it
+  later; left empty, no model is claimed. Only the model field of the device
+  changes — its name, its identifier and every entity ID stay as they were, so
+  history and statistics carry on
+  ([#14](https://github.com/JanJoh/thermiagenesis/issues/14)).
+
 - **Internal immersion heater on `mega`.** `input 67` (internal additional
   heater, current step) and `dinput 222` (internal additional heater active)
   answer on a Calibra configured as `mega`; the `thermia-genesis-modbus` table
@@ -190,14 +200,16 @@ whereas zero current or zero power is ambiguous.
 
 ## Known rough edges
 
-- `ATTR_MODEL` in each platform is the hardcoded string
-  `"Diplomat Inverter Duo"`, so the device and its entity IDs carry that name
-  whatever your pump actually is. It means entity names are not evidence of the
-  configured platform — the configured `kind` is `entry.data[CONF_TYPE]`. Note
-  this is **not safely fixable**: `ATTR_MODEL` is also the device identifier
-  (`identifiers: {(DOMAIN, ATTR_MODEL)}`), so changing it would register a new
-  device and orphan every existing entity. The library already exposes a correct
-  `thermia.model`, but adopting it needs a migration rather than an edit.
+- The device is still _named_ `Diplomat Inverter Duo` by the integration, and on
+  many installs the entity IDs carry that name
+  (`sensor.diplomat_inverter_duo_…`) whatever your pump actually is — so entity
+  names are not evidence of the configured platform; the configured `kind` is
+  `entry.data[CONF_TYPE]`. The name is deliberately left alone: the same string
+  is the device identifier (`identifiers: {(DOMAIN, "Diplomat Inverter Duo")}`),
+  so changing it would register a new device and orphan every existing entity.
+  Set the **Model** field for the real model, and rename the device in Home
+  Assistant if you want another display name (answer _No_ when asked whether to
+  rename the entity IDs too).
 - `climate.py` is the one platform that does not gate entity creation on the
   configured model. Currently harmless, since `CLIMATE_TYPES` contains no
   model-specific registers.

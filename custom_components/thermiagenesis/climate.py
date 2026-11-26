@@ -19,15 +19,13 @@ from homeassistant.util.unit_conversion import TemperatureConverter
 from .const import ATTR_DEFAULT_ENABLED
 from .const import ATTR_ENABLED
 from .const import ATTR_LABEL
-from .const import ATTR_MANUFACTURER
 from .const import ATTR_STATUS
 from .const import CLIMATE_TYPES
 from .const import DOMAIN
 from .const import KEY_STATUS_VALUE
 from .const import room_temperature_is_present
 from .const import ROOM_TEMPERATURE_REGISTER
-
-ATTR_MODEL = "Diplomat Inverter Duo"
+from .entity import build_device_info
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -40,13 +38,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 
     sensors = []
 
-    device_info = {
-        "identifiers": {(DOMAIN, ATTR_MODEL)},
-        "name": ATTR_MODEL,
-        "manufacturer": ATTR_MANUFACTURER,
-        "model": ATTR_MODEL,
-        "sw_version": coordinator.firmware,
-    }
+    device_info = build_device_info(coordinator, config_entry)
 
     for sensor in CLIMATE_TYPES:
         sensors.append(ThermiaClimateSensor(coordinator, sensor, device_info))

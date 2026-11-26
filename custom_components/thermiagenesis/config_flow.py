@@ -5,14 +5,17 @@ import logging
 import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.const import CONF_HOST
+from homeassistant.const import CONF_MODEL
 from homeassistant.const import CONF_PORT
 from homeassistant.const import CONF_TYPE
+from homeassistant.core import callback
 from homeassistant.helpers.selector import selector
 from thermia_genesis_modbus import ThermiaConnectionError
 from thermia_genesis_modbus import ThermiaGenesis
 from thermia_genesis_modbus.const import ATTR_COIL_ENABLE_HEAT
 
 from .const import DOMAIN  # pylint:disable=unused-import
+from .entity import configured_model
 
 STEP_USER_DATA_SCHEMA = vol.Schema(
     {
@@ -35,6 +38,12 @@ class ThermiaGenesisConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     def __init__(self):
         """Initialize."""
         self._errors = {}
+
+    @staticmethod
+    @callback
+    def async_get_options_flow(config_entry):
+        """Return the options flow, where the model can be changed later."""
+        return ThermiaGenesisOptionsFlow(config_entry)
 
     async def _validate_input(self, data):
         """Validate the user input allows us to connect.
@@ -67,6 +76,10 @@ class ThermiaGenesisConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                             }
                         }
                     ),
+                    vol.Optional(
+                        CONF_MODEL,
+                        description={"suggested_value": defaults.get(CONF_MODEL, "")},
+                    ): str,
                 }
             ),
             errors=self._errors,
@@ -78,7 +91,12 @@ class ThermiaGenesisConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             try:
                 info = await self._validate_input(user_input)
-                return self.async_create_entry(title=info["title"], data=user_input)
+                # The model is optional; an empty one is left out of the entry.
+                data = {k: v for k, v in user_input.items() if k != CONF_MODEL}
+                model = (user_input.get(CONF_MODEL) or "").strip()
+                if model:
+                    data[CONF_MODEL] = model
+                return self.async_create_entry(title=info["title"], data=data)
             except ThermiaConnectionError:
                 _LOGGER.info("Connect error")
                 self._errors["base"] = "connection_error"
@@ -91,6 +109,36 @@ class ThermiaGenesisConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 self._errors["base"] = "connection_error"
 
         return await self._show_config_form(user_input)
+
+
+class ThermiaGenesisOptionsFlow(config_entries.OptionsFlow):
+    """Change the pump's model after setup."""
+
+    def __init__(self, config_entry):
+        """Initialize."""
+        self._entry = config_entry
+
+    async def async_step_init(self, user_input=None):
+        """Show the model, and store what the user makes of it."""
+        if user_input is not None:
+            model = (user_input.get(CONF_MODEL) or "").strip()
+            return self.async_create_entry(
+                title="", data={**self._entry.options, CONF_MODEL: model}
+            )
+
+        return self.async_show_form(
+            step_id="init",
+            data_schema=vol.Schema(
+                {
+                    vol.Optional(
+                        CONF_MODEL,
+                        description={
+                            "suggested_value": configured_model(self._entry) or ""
+                        },
+                    ): str,
+                }
+            ),
+        )
 
 
 # class ThermiaGenesisConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):

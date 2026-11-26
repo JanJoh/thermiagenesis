@@ -7,7 +7,11 @@
         "data": {
           "host": "Hostname or IP address",
           "port": "Modbus port",
-          "type": "Heatpump model"
+          "type": "Register map",
+          "model": "Model (optional)"
+        },
+        "data_description": {
+          "model": "Shown as the device's model, for example Calibra 8 or Sigrin 13 Duo. It does not rename the device or change any entity ID."
         }
       }
     },
@@ -17,6 +21,19 @@
     },
     "abort": {
       "already_configured": "This heatpump is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Thermia Genesis",
+        "data": {
+          "model": "Model (optional)"
+        },
+        "data_description": {
+          "model": "Shown as the device's model, for example Calibra 8 or Sigrin 13 Duo. It does not rename the device or change any entity ID."
+        }
+      }
     }
   }
 }
