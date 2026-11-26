@@ -35,3 +35,14 @@ async def test_other_numbers_keep_their_range():
     kind = thermiaconst.ATTR_HOLDING_COMFORT_WHEEL_SETTING
     n = number(kind, {GEARS: 10})
     assert n.native_max_value == n.max
+
+
+async def test_gear_shift_delays_are_in_seconds_not_percent():
+    """The generic 0..100 fallback sat below the pump's own 300 s default."""
+    for kind in (
+        thermiaconst.ATTR_HOLDING_GEAR_SHIFT_DELAY_HEATING,
+        thermiaconst.ATTR_HOLDING_GEAR_SHIFT_DELAY_POOL,
+        thermiaconst.ATTR_HOLDING_GEAR_SHIFT_DELAY_COOLING,
+    ):
+        n = number(kind, {})
+        assert (n.native_min_value, n.native_max_value) == (0, 1800)
