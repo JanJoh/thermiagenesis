@@ -19,7 +19,7 @@ Thermia Genesis is in the default [HACS](https://hacs.xyz/) catalog.
 3. **Settings → Devices & Services → + Add Integration → Thermia Genesis**, and
    enter the pump's Modbus host, port (`502`), and register map — `inverter` or
    `mega` (a Calibra uses `mega`). **Model** is optional: whatever you type
-   (say _Calibra 8_ or _Sigrin 13 Duo_) is shown as the device's model, and you
+   (say _Calibra Eco 8_ or _Sigrin 13 Duo_) is shown as the device's model, and you
    can change it later under **Configure**.
 
 Requires Home Assistant **2024.1.0** or newer.
@@ -190,7 +190,7 @@ Two things from it worth knowing when reading the register tables:
   specific card.
 
 A read-only sweep of all 434 registers in the library's table against a Calibra
-8E returned data for every one, with no Modbus exceptions. **That is not
+Eco 8 returned data for every one, with no Modbus exceptions. **That is not
 evidence a feature exists** — the Genesis controller answers its whole address
 map whether or not the optional hardware is fitted. On a pump without the
 electric meter, for instance, `input 69`–`84` all read `0`, including the three
