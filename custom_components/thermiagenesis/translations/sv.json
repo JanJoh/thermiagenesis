@@ -11,7 +11,7 @@
           "model": "Modell (valfritt)"
         },
         "data_description": {
-          "model": "Visas som enhetens modell, till exempel Calibra 8 eller Sigrin 13 Duo. Enheten döps inte om och inga entitets-ID ändras."
+          "model": "Visas som enhetens modell, till exempel Calibra Eco 8 eller Sigrin 13 Duo. Enheten döps inte om och inga entitets-ID ändras."
         }
       }
     },
@@ -31,7 +31,7 @@
           "model": "Modell (valfritt)"
         },
         "data_description": {
-          "model": "Visas som enhetens modell, till exempel Calibra 8 eller Sigrin 13 Duo. Enheten döps inte om och inga entitets-ID ändras."
+          "model": "Visas som enhetens modell, till exempel Calibra Eco 8 eller Sigrin 13 Duo. Enheten döps inte om och inga entitets-ID ändras."
         }
       }
     }
