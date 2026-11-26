@@ -11,7 +11,7 @@
           "model": "Model (optional)"
         },
         "data_description": {
-          "model": "Shown as the device's model, for example Calibra 8 or Sigrin 13 Duo. It does not rename the device or change any entity ID."
+          "model": "Shown as the device's model, for example Calibra Eco 8 or Sigrin 13 Duo. It does not rename the device or change any entity ID."
         }
       }
     },
@@ -31,7 +31,7 @@
           "model": "Model (optional)"
         },
         "data_description": {
-          "model": "Shown as the device's model, for example Calibra 8 or Sigrin 13 Duo. It does not rename the device or change any entity ID."
+          "model": "Shown as the device's model, for example Calibra Eco 8 or Sigrin 13 Duo. It does not rename the device or change any entity ID."
         }
       }
     }
