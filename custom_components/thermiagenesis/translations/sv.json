@@ -7,7 +7,11 @@
         "data": {
           "host": "Värdnamn eller IP-adress",
           "port": "Modbus-port",
-          "type": "Värmepumpsmodell"
+          "type": "Registerkarta",
+          "model": "Modell (valfritt)"
+        },
+        "data_description": {
+          "model": "Visas som enhetens modell, till exempel Calibra 8 eller Sigrin 13 Duo. Enheten döps inte om och inga entitets-ID ändras."
         }
       }
     },
@@ -17,6 +21,19 @@
     },
     "abort": {
       "already_configured": "Denna värmepump är redan konfigurerad."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Thermia Genesis",
+        "data": {
+          "model": "Modell (valfritt)"
+        },
+        "data_description": {
+          "model": "Visas som enhetens modell, till exempel Calibra 8 eller Sigrin 13 Duo. Enheten döps inte om och inga entitets-ID ändras."
+        }
+      }
     }
   }
 }

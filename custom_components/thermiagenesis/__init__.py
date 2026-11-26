@@ -74,7 +74,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     # to SCAN_INTERVAL seconds after each setup or reload.
     await coordinator.async_refresh()
 
+    entry.async_on_unload(entry.add_update_listener(_async_reload_on_update))
+
     return True
+
+
+async def _async_reload_on_update(hass: HomeAssistant, entry: ConfigEntry):
+    """Reload so a model changed in the options reaches the device registry."""
+    await hass.config_entries.async_reload(entry.entry_id)
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry):
