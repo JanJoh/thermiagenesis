@@ -162,6 +162,38 @@ Relative to the original integration and library, this version carries:
   history and statistics carry on
   ([#14](https://github.com/JanJoh/thermiagenesis/issues/14)).
 
+- **Heat demand, power, energy and smart grid sensors**
+  ([#13](https://github.com/JanJoh/thermiagenesis/issues/13)). All are disabled
+  by default; enable the ones your pump answers on the device page.
+
+  | Register    | Sensor                                     |
+  | ----------- | ------------------------------------------ |
+  | input 30    | Calculated Heat Demand                     |
+  | input 157   | Heat Output Power (kW)                     |
+  | input 158   | Consumed Electrical Power (kW)             |
+  | input 331   | Consumed Electrical Energy (kWh)           |
+  | input 332   | Delivered Heat Energy (kWh)                |
+  | input 333   | Reported COP                               |
+  | input 334   | Energy From Natural Source (kWh)           |
+  | holding 124 | Power Consumption Control Mode (read-only) |
+  | holding 125 | Input Power Limit (kW, read-only)          |
+
+  Inputs 331–334 are in no Thermia document. On a Calibra they follow roughly
+  the last 24 hours — 16 kWh reported when an external meter had counted 16.4
+  kWh over the preceding day — and 333 is 332 divided by 331. They are therefore
+  plain measurements, not totals, and do not belong in the Energy dashboard.
+
+  The control mode is left a number, because its meaning depends on how the pump
+  is set up: in SG-Ready mode 0 normal, 1 load-up, 2 EVU, 3 boost; in PL/LU mode
+  0 normal, 1 power limit, 2 load-up, 3 power limit. Nothing is written to
+  either smart grid register.
+
+  _Comfort Mode_ (input 82), which showed a bare number, now shows its name:
+  EVU, Normal, Comfort or Boost.
+
+  A sensor your pump does not have no longer disturbs the others: the register
+  block it sits in is skipped and the rest are read as usual.
+
 - **Internal immersion heater on `mega`.** `input 67` (internal additional
   heater, current step) and `dinput 222` (internal additional heater active)
   answer on a Calibra configured as `mega`; the `thermia-genesis-modbus` table

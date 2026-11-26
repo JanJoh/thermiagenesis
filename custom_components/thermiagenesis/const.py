@@ -24,6 +24,7 @@ ATTR_SCALE = "scale"
 ATTR_ADDR = "address"
 ATTR_MAX_VALUE = "max_value"
 ATTR_MIN_VALUE = "min_value"
+ATTR_OPTIONS = "options"
 
 # --- Missing room-sensor handling (issue #3) --------------------------------
 # input_room_temperature_sensor (input 121, scale 10) returns a large
@@ -54,6 +55,7 @@ UNIT_PRESSURE = "bar"
 UNIT_VOLTAGE = "V"
 UNIT_AMPERE = "A"
 UNIT_WATT = "W"
+UNIT_KILOWATT = "kW"
 UNIT_ENERGY = "kWh"
 
 
@@ -1060,6 +1062,13 @@ SENSOR_TYPES = {
         ATTR_CLASS: SensorDeviceClass.TEMPERATURE,
         ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
     },
+    thermiaconst.ATTR_INPUT_CALCULATED_DEMAND_HEAT: {
+        ATTR_ICON: ICON_INPUT,
+        ATTR_LABEL: "Calculated Heat Demand",
+        ATTR_UNIT: None,
+        ATTR_DEFAULT_ENABLED: False,
+        ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
+    },
     thermiaconst.ATTR_INPUT_COOLING_SEASON_INTEGRAL_VALUE: {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Cooling Season Integral Value",
@@ -1347,6 +1356,8 @@ SENSOR_TYPES = {
         ATTR_LABEL: "Comfort Mode",
         ATTR_UNIT: None,
         ATTR_DEFAULT_ENABLED: False,
+        # The smart grid state the pump reports, per Thermia's Modbus document.
+        ATTR_OPTIONS: {1: "EVU", 4: "Normal", 5: "Comfort", 6: "Boost"},
     },
     thermiaconst.ATTR_INPUT_ELECTRIC_METER_KWH_TOTAL: {
         ATTR_ICON: ICON_INPUT,
@@ -1809,6 +1820,22 @@ SENSOR_TYPES = {
         ATTR_UNIT: None,
         ATTR_DEFAULT_ENABLED: False,
     },
+    thermiaconst.ATTR_INPUT_CURRENT_POWER_OUTPUT: {
+        ATTR_ICON: ICON_INPUT,
+        ATTR_LABEL: "Heat Output Power",
+        ATTR_UNIT: UNIT_KILOWATT,
+        ATTR_DEFAULT_ENABLED: False,
+        ATTR_CLASS: SensorDeviceClass.POWER,
+        ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
+    },
+    thermiaconst.ATTR_INPUT_CURRENT_CONSUMED_POWER: {
+        ATTR_ICON: ICON_INPUT,
+        ATTR_LABEL: "Consumed Electrical Power",
+        ATTR_UNIT: UNIT_KILOWATT,
+        ATTR_DEFAULT_ENABLED: False,
+        ATTR_CLASS: SensorDeviceClass.POWER,
+        ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
+    },
     thermiaconst.ATTR_INPUT_PRIMARY_UNIT_ALARM_COMBINED_OUTPUT_OF_ALL_CLASS_D_ALARMS: {
         ATTR_ICON: ICON_INPUT,
         ATTR_LABEL: "Primary Unit Alarm Combined Output Of All Class D Alarms",
@@ -1850,6 +1877,54 @@ SENSOR_TYPES = {
         ATTR_LABEL: "Primary Unit Alarm Primary Unit Can Not Communicate With Expansion",
         ATTR_UNIT: None,
         ATTR_DEFAULT_ENABLED: False,
+    },
+    # Inputs 331-334 are in no Thermia document. On a Calibra they track roughly the
+    # last 24 hours rather than counting up for ever, so they are plain measurements:
+    # an energy device class would need a total, and a total that falls corrupts
+    # Home Assistant's long-term statistics.
+    thermiaconst.ATTR_INPUT_CONSUMED_ELECTRICAL_ENERGY: {
+        ATTR_ICON: ICON_INPUT,
+        ATTR_LABEL: "Consumed Electrical Energy",
+        ATTR_UNIT: UNIT_ENERGY,
+        ATTR_DEFAULT_ENABLED: False,
+        ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
+    },
+    thermiaconst.ATTR_INPUT_DELIVERED_HEAT_ENERGY: {
+        ATTR_ICON: ICON_INPUT,
+        ATTR_LABEL: "Delivered Heat Energy",
+        ATTR_UNIT: UNIT_ENERGY,
+        ATTR_DEFAULT_ENABLED: False,
+        ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
+    },
+    thermiaconst.ATTR_INPUT_REPORTED_COP: {
+        ATTR_ICON: ICON_INPUT,
+        ATTR_LABEL: "Reported COP",
+        ATTR_UNIT: None,
+        ATTR_DEFAULT_ENABLED: False,
+        ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
+    },
+    thermiaconst.ATTR_INPUT_ENERGY_FROM_NATURAL_SOURCE: {
+        ATTR_ICON: ICON_INPUT,
+        ATTR_LABEL: "Energy From Natural Source",
+        ATTR_UNIT: UNIT_ENERGY,
+        ATTR_DEFAULT_ENABLED: False,
+        ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
+    },
+    # Smart grid settings, shown read-only. What a mode number means depends on how
+    # the pump is set up (SG-Ready or PL/LU), so it is left a number.
+    thermiaconst.ATTR_HOLDING_DESIRED_POWER_CONSUMPTION_CONTROL_MODE: {
+        ATTR_ICON: ICON_INPUT,
+        ATTR_LABEL: "Power Consumption Control Mode",
+        ATTR_UNIT: None,
+        ATTR_DEFAULT_ENABLED: False,
+    },
+    thermiaconst.ATTR_HOLDING_INPUT_POWER_LIMIT: {
+        ATTR_ICON: ICON_INPUT,
+        ATTR_LABEL: "Input Power Limit",
+        ATTR_UNIT: UNIT_KILOWATT,
+        ATTR_DEFAULT_ENABLED: False,
+        ATTR_CLASS: SensorDeviceClass.POWER,
+        ATTR_STATE_CLASS: SensorStateClass.MEASUREMENT,
     },
 }
 

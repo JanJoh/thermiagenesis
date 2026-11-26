@@ -11,6 +11,7 @@ from .const import ATTR_CLASS
 from .const import ATTR_DEFAULT_ENABLED
 from .const import ATTR_ICON
 from .const import ATTR_LABEL
+from .const import ATTR_OPTIONS
 from .const import ATTR_STATE_CLASS
 from .const import ATTR_UNIT
 from .const import DOMAIN
@@ -47,8 +48,17 @@ def is_status(kind):
     return REGISTERS[kind][KEY_DATATYPE] == TYPE_STATUS
 
 
+def named_values(kind):
+    """Return the register's value-to-text map, or None if it is a plain number."""
+    return SENSOR_TYPES[kind].get(ATTR_OPTIONS)
+
+
+def is_enum(kind):
+    return is_status(kind) or named_values(kind) is not None
+
+
 def sensor_device_class(kind):
-    if is_status(kind):
+    if is_enum(kind):
         return SensorDeviceClass.ENUM
     return SENSOR_TYPES[kind].get(ATTR_CLASS, None)
 
@@ -56,7 +66,7 @@ def sensor_device_class(kind):
 def sensor_state_class(kind):
     # A text state is not a measurement; with a state class the history
     # view draws an empty statistics graph instead of the state timeline.
-    if is_status(kind):
+    if is_enum(kind):
         return None
     return SENSOR_TYPES[kind].get(ATTR_STATE_CLASS, SensorStateClass.MEASUREMENT)
 
@@ -64,7 +74,24 @@ def sensor_state_class(kind):
 def sensor_options(kind):
     if is_status(kind):
         return STATUS_OPTIONS
+    if named_values(kind) is not None:
+        return list(named_values(kind).values())
     return None
+
+
+def sensor_state(kind, value):
+    """Return the state for a raw register value.
+
+    A register with named values shows the name; a value without a name is
+    unknown, since an enum sensor may only report one of its options.
+    """
+    names = named_values(kind)
+    if names is None or value is None:
+        return value
+    try:
+        return names.get(int(value))
+    except (TypeError, ValueError):
+        return None
 
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
@@ -216,8 +243,7 @@ class ThermiaGenericSensor(SensorEntity):
     @property
     def state(self):
         """Return the state."""
-        val = self.coordinator.data.get(self.kind)
-        return val
+        return sensor_state(self.kind, self.coordinator.data.get(self.kind))
 
     @property
     def extra_state_attributes(self):
