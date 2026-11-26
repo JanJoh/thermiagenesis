@@ -11,14 +11,20 @@ repository is the Home Assistant integration built on top of it.
 
 ## Installation
 
-1. In HACS, add this repository as a **custom repository**
-   (`JanJoh/thermiagenesis`, category **Integration**) and install it.
+Thermia Genesis is in the default [HACS](https://hacs.xyz/) catalog.
+
+1. In HACS, search for **Thermia Genesis** and download it — or
+   [open it in HACS directly](https://my.home-assistant.io/redirect/hacs_repository/?owner=JanJoh&repository=thermiagenesis&category=integration).
 2. Restart Home Assistant.
 3. **Settings → Devices & Services → + Add Integration → Thermia Genesis**, and
    enter the pump's Modbus host, port (`502`), and register map — `inverter` or
    `mega` (a Calibra uses `mega`).
 
 Requires Home Assistant **2024.1.0** or newer.
+
+**Not showing up in the search?** Add it as a custom repository instead: HACS →
+⋮ → **Custom repositories** → `JanJoh/thermiagenesis`, category **Integration**,
+then download it from there. The result is the same.
 
 ### Coming from CJNE's original integration?
 
