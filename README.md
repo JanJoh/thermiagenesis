@@ -146,6 +146,12 @@ Relative to the original integration and library, this version carries:
   the heating season active all year; it happened on a real pump and went
   unnoticed for a month.
 
+- **Gear shift delays take seconds.** _Gear Shift Delay Heating/Pool/Cooling_
+  had no range of their own and fell back to the 0–100 meant for percentages —
+  below the pump's own 300 s default, so the control could not even hold the
+  current value. They now accept 0–1800 s
+  ([#14](https://github.com/JanJoh/thermiagenesis/issues/14)).
+
 - **Internal immersion heater on `mega`.** `input 67` (internal additional
   heater, current step) and `dinput 222` (internal additional heater active)
   answer on a Calibra configured as `mega`; the `thermia-genesis-modbus` table
