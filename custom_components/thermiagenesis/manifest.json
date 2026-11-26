@@ -7,6 +7,6 @@
   "documentation": "https://github.com/JanJoh/thermiagenesis",
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/JanJoh/thermiagenesis/issues",
-  "requirements": ["thermia-genesis-modbus==1.0.0"],
+  "requirements": ["thermia-genesis-modbus==1.1.0"],
   "version": "1.0.6"
 }

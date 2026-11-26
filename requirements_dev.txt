@@ -1,4 +1,4 @@
 homeassistant
-thermia-genesis-modbus==1.0.0
+thermia-genesis-modbus==1.1.0
 flake8
 reorder-python-imports
