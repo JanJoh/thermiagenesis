@@ -47,13 +47,15 @@ repository ID"_). The project was re-created as a standalone, non-fork
 repository, which changed its GitHub repository ID — and HACS keys custom
 repositories by that ID.
 
-Re-point HACS at it:
+Switch to the catalog entry:
 
 1. HACS → **Thermia Genesis** → ⋮ → **Remove** (this removes the HACS _download_
    only — not your devices or entities).
 2. HACS → ⋮ → **Custom repositories** → remove `JanJoh/thermiagenesis` if it's
-   still listed, then **add** it again (category _Integration_).
-3. Reinstall **Thermia Genesis** (now 1.0.0+) and **restart** Home Assistant.
+   still listed. You don't need to add it again: the integration is in the
+   default HACS catalog now.
+3. Search HACS for **Thermia Genesis**, download it (now 1.0.0+) and **restart**
+   Home Assistant.
 
 **Do not** delete the integration from _Settings → Devices & Services_ — that
 removes the config entry and erases your entity renames, areas, and anything
