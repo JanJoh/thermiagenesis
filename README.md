@@ -165,51 +165,12 @@ Relative to the original integration and library, this version carries:
   ([#14](https://github.com/JanJoh/thermiagenesis/issues/14)).
 
 - **Heat demand, power, energy and smart grid sensors**
-  ([#13](https://github.com/JanJoh/thermiagenesis/issues/13)). All are disabled
-  by default; enable the ones your pump answers on the device page.
-
-  | Register    | Sensor                                     |
-  | ----------- | ------------------------------------------ |
-  | input 30    | Calculated Heat Demand                     |
-  | input 157   | Heat Output Power (kW)                     |
-  | input 158   | Consumed Electrical Power (kW)             |
-  | input 331   | Consumed Electrical Energy (kWh)           |
-  | input 332   | Delivered Heat Energy (kWh)                |
-  | input 333   | Reported COP                               |
-  | input 334   | Energy From Natural Source (kWh)           |
-  | holding 124 | Power Consumption Control Mode (read-only) |
-  | holding 125 | Input Power Limit (kW, read-only)          |
-
-  Inputs 331–334 are in no Thermia document. On a Calibra they hold about a
-  day's worth — 16 kWh reported when an external meter had counted 16.4 kWh
-  over the preceding 24 hours — and 333 is 332 divided by 331. They are
-  therefore plain measurements, not totals, and do not belong in the Energy
-  dashboard.
-
-  None of this needs the electric meter module: the power and energy values are
-  the controller's own estimate, not a measurement. Checked on a Calibra Eco 8
-  without the module, against a separate meter on the pump's supply:
-
-  |                                            | Pump    | Meter         |
-  | ------------------------------------------ | ------- | ------------- |
-  | Electrical power, steady load              | 1.16 kW | 1.19 kW       |
-  | Electrical energy, a day in early November | 16 kWh  | 16.4 kWh      |
-  | Electrical energy, a day in late November  | 33 kWh  | 32.7–35.0 kWh |
-
-  So the estimate ran about 2 % under the meter on power. The second energy row
-  gives a range because it is not yet clear whether the pump reports the last 24
-  hours (35.0 kWh on the meter) or the previous calendar day (32.7 kWh).
-
-  The control mode is left a number, because its meaning depends on how the pump
-  is set up: in SG-Ready mode 0 normal, 1 load-up, 2 EVU, 3 boost; in PL/LU mode
-  0 normal, 1 power limit, 2 load-up, 3 power limit. Nothing is written to
-  either smart grid register.
-
-  _Comfort Mode_ (input 82), which showed a bare number, now shows its name:
-  EVU, Normal, Comfort or Boost.
-
-  A sensor your pump does not have no longer disturbs the others: the register
-  block it sits in is skipped and the rest are read as usual.
+  ([#13](https://github.com/JanJoh/thermiagenesis/issues/13)), all disabled by
+  default. They need no electric meter module: the values are the controller's
+  own estimate. Against a real meter the power estimate runs about 2 % low, and
+  the energy figures are a rolling 24 hours of heating only, not a calendar day.
+  The register list, the comparison and the smart grid modes are in
+  [docs/power-and-energy.md](https://github.com/JanJoh/thermiagenesis/blob/master/docs/power-and-energy.md).
 
 - **Gears are whole numbers.** _Compressor Available Gears_ and _Compressor
   Current Gear_ showed `10.0`, because the register scales them by 100. They
