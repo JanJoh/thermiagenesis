@@ -13,6 +13,7 @@ from homeassistant.const import CONF_TYPE
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers import config_validation as cv
+from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers.typing import ConfigType
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.helpers.update_coordinator import UpdateFailed
@@ -22,6 +23,7 @@ from thermia_genesis_modbus.const import ATTR_INPUT_SOFTWARE_VERSION_MICRO
 from thermia_genesis_modbus.const import ATTR_INPUT_SOFTWARE_VERSION_MINOR
 
 from .const import DOMAIN
+from .entity import DEVICE_NAME
 
 PLATFORMS = ["sensor", "binary_sensor", "climate", "switch", "number"]
 
@@ -100,6 +102,19 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry):
     return unload_ok
 
 
+def _firmware_of(data):
+    """Return the firmware version in a set of register values, or None."""
+    data = data or {}
+    try:
+        return (
+            f"{data[ATTR_INPUT_SOFTWARE_VERSION_MAJOR]}"
+            f".{data[ATTR_INPUT_SOFTWARE_VERSION_MINOR]}"
+            f".{data[ATTR_INPUT_SOFTWARE_VERSION_MICRO]}"
+        )
+    except KeyError:
+        return None
+
+
 class ThermiaGenesisDataUpdateCoordinator(DataUpdateCoordinator):
     """Class to manage fetching ThermiaGenesis data from the heat pump."""
 
@@ -110,6 +125,8 @@ class ThermiaGenesisDataUpdateCoordinator(DataUpdateCoordinator):
         )
         self.kind = kind
         self.attributes = {}
+        # The firmware version last read from the pump, to notice when it changes.
+        self._seen_firmware = None
 
         super().__init__(
             hass,
@@ -136,7 +153,27 @@ class ThermiaGenesisDataUpdateCoordinator(DataUpdateCoordinator):
 
         except ConnectionError as error:
             raise UpdateFailed(error)
+        self._note_firmware(_firmware_of(data))
         return data
+
+    def _note_firmware(self, firmware):
+        """Keep the device registry in step with the pump's firmware.
+
+        The version registers are read on every poll, but the device registry
+        only heard about the version when the entities were set up. A pump
+        updated while Home Assistant was running kept showing its old firmware
+        until the next restart or reload.
+        """
+        if firmware is None:
+            return
+        previous, self._seen_firmware = self._seen_firmware, firmware
+        if previous is None or previous == firmware:
+            return
+        _LOGGER.info("Pump firmware changed from %s to %s", previous, firmware)
+        registry = dr.async_get(self.hass)
+        device = registry.async_get_device(identifiers={(DOMAIN, DEVICE_NAME)})
+        if device is not None:
+            registry.async_update_device(device.id, sw_version=firmware)
 
     async def _async_set_data(self, register, value):
         """Set data via library."""
@@ -158,15 +195,7 @@ class ThermiaGenesisDataUpdateCoordinator(DataUpdateCoordinator):
         own except KeyError, and the attribute stays None. device_info is
         built between those two refreshes, so it would never see a value.
         """
-        data = self.data or {}
-        try:
-            return (
-                f"{data[ATTR_INPUT_SOFTWARE_VERSION_MAJOR]}"
-                f".{data[ATTR_INPUT_SOFTWARE_VERSION_MINOR]}"
-                f".{data[ATTR_INPUT_SOFTWARE_VERSION_MICRO]}"
-            )
-        except KeyError:
-            return None
+        return _firmware_of(self.data)
 
     def registerAttribute(self, attribute):
         if type(attribute) is list:
